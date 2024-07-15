@@ -8,6 +8,9 @@ import {
   serial,
   timestamp,
   varchar,
+  text,
+  boolean,
+  pgEnum
 } from "drizzle-orm/pg-core";
 
 /**
@@ -33,4 +36,19 @@ export const posts = createTable(
   (example) => ({
     nameIndex: index("name_idx").on(example.name),
   })
+);
+
+export const statusEnum = pgEnum('status', ['active', 'inactive', 'canceled']);
+
+export const users = createTable(
+  "users",
+  {
+    id: text("id").primaryKey(),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .default(sql`CURRENT_TIMESTAMP`)
+      .notNull(),
+    status: statusEnum("status").default("inactive").notNull(),
+    active_until: timestamp("active_until", { withTimezone: true }),
+    is_trial: boolean("is_trial").default(false)
+  }
 );
