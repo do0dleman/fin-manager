@@ -6,7 +6,9 @@
  * TL;DR - This is where all the tRPC server stuff is created and plugged in. The pieces you will
  * need to use are documented accordingly near the end.
  */
+import { getAuth } from "@clerk/nextjs/server";
 import { initTRPC } from "@trpc/server";
+import { NextRequest } from "next/server";
 import superjson from "superjson";
 import { ZodError } from "zod";
 
@@ -24,7 +26,14 @@ import { db } from "~/server/db";
  *
  * @see https://trpc.io/docs/server/context
  */
-export const createTRPCContext = async (opts: { headers: Headers }) => {
+export const createTRPCContext = async (opts: { headers: Headers, req?: NextRequest }) => {
+  if (opts.req) {
+    return {
+      db,
+      auth: getAuth(opts.req),
+      headers: opts.headers,
+    };
+  }
   return {
     db,
     ...opts,
