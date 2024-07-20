@@ -2,13 +2,34 @@ import { NextResponse } from 'next/server'
 import { db } from '~/server/db'
 import { users } from '~/server/db/schema'
 import { eq } from 'drizzle-orm'
+import { Webhook } from "svix";
 import type OnUserCreateModel from './model'
+import { env } from '~/env';
 
 async function handler(req: Request) {
-  const json = await req.json() as OnUserCreateModel
-  const userId = json.data.id
+  const svix_id = req.headers.get("svix-id") ?? "";
+  const svix_timestamp = req.headers.get("svix-timestamp") ?? "";
+  const svix_signature = req.headers.get("svix-signature") ?? "";
 
-  //! todo add user to the db
+  const body = await req.text();
+
+  const sivx = new Webhook(env.CLERK_SIGNING_SECRET);
+
+  let msg;
+
+  try {
+    msg = sivx.verify(body, {
+      "svix-id": svix_id,
+      "svix-timestamp": svix_timestamp,
+      "svix-signature": svix_signature,
+    }) as OnUserCreateModel;
+  }
+  catch (err) {
+    return new Response("Bad Request", { status: 400 });
+  }
+
+  const userId = msg.data.id
+
   const existringUser = await db.query.users.findFirst({ where: eq(users.id, userId) })
 
   if (existringUser) {
