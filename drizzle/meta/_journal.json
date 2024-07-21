@@ -22,6 +22,13 @@
       "when": 1721048589793,
       "tag": "0002_goofy_hitman",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "6",
+      "when": 1721477931811,
+      "tag": "0003_lying_tarot",
+      "breakpoints": true
     }
   ]
 }

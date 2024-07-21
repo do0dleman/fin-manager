@@ -10,7 +10,9 @@ import {
   varchar,
   text,
   boolean,
-  pgEnum
+  pgEnum,
+  numeric,
+  integer
 } from "drizzle-orm/pg-core";
 
 /**
@@ -39,6 +41,7 @@ export const posts = createTable(
 );
 
 export const statusEnum = pgEnum('status', ['active', 'inactive', 'canceled']);
+export const transactionTypeEnum = pgEnum('type', ['income', 'expense']);
 
 export const users = createTable(
   "users",
@@ -50,5 +53,27 @@ export const users = createTable(
     status: statusEnum("status").default("inactive").notNull(),
     active_until: timestamp("active_until", { withTimezone: true }),
     is_trial: boolean("is_trial").default(false)
+  }
+);
+
+export const moneyAccounts = createTable(
+  "money_accounts",
+  {
+    id: serial("id").primaryKey(),
+    name: varchar("name", { length: 64 }).notNull(),
+    amount: numeric("amount", { scale: 2, precision: 15 }),
+    user_id: text("user_id").references(() => users.id)
+  }
+);
+export const transactions = createTable(
+  "transactions",
+  {
+    id: serial("id").primaryKey(),
+    user_id: text("user_id").references(() => users.id).notNull(),
+    account_id: integer("account_id").references(() => moneyAccounts.id),
+    name: varchar("name", { length: 64 }),
+    amount: numeric("amount", { scale: 2, precision: 12 }).notNull(),
+    category: varchar("category", { length: 32 }),
+    type: transactionTypeEnum("type").notNull()
   }
 );
