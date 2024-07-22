@@ -5,7 +5,7 @@ import {
   ResizablePanelGroup,
 } from "~/app/_components/ui/resizable";
 import Toolbar from "../_modules/Toolbar";
-import Board from "../_modules/Board";
+import Board from "../_modules/board/Board";
 import { useUser } from "@clerk/nextjs";
 import { api } from "~/trpc/react";
 import { redirect } from "next/navigation";
