@@ -2,8 +2,7 @@ import { api } from "~/trpc/react";
 import TransactionForm from "./components/TransactionForm";
 
 function Transactions() {
-  const { data, isFetched, refetch } =
-    api.transactionsRouter.getUserLatestTransactions.useQuery();
+  const { data } = api.transactionsRouter.getUserLatestTransactions.useQuery();
 
   return (
     <div className="max-w-96">

@@ -1,4 +1,3 @@
-import { useUser } from "@clerk/nextjs";
 import { useState } from "react";
 import { Button } from "~/app/_components/ui/button";
 import { Input } from "~/app/_components/ui/input";
@@ -6,7 +5,7 @@ import { Label } from "~/app/_components/ui/label";
 import { api } from "~/trpc/react";
 
 function BankAccounts() {
-  const { data, isFetched, refetch } =
+  const { data, refetch } =
     api.moneyAccounts.getUsersMoneyAccounts.useQuery();
 
   const createMutation = api.moneyAccounts.createMoneyAccounts.useMutation({

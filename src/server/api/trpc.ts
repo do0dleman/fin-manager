@@ -8,7 +8,7 @@
  */
 import { getAuth } from "@clerk/nextjs/server";
 import { initTRPC, TRPCError } from "@trpc/server";
-import { NextRequest } from "next/server";
+import { type NextRequest } from "next/server";
 import superjson from "superjson";
 import { ZodError } from "zod";
 
