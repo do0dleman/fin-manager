@@ -13,7 +13,7 @@ export const appRouter = createTRPCRouter({
   post: postRouter,
   users: usersRouter,
   moneyAccounts: moneyAccountsRouter,
-  transactionsRouter: transactionsRouter,
+  transactions: transactionsRouter,
 });
 
 // export type definition of API

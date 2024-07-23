@@ -26,9 +26,9 @@ function TransactionForm() {
     api.moneyAccounts.getUsersMoneyAccounts.useQuery();
 
   const { refetch } =
-    api.transactionsRouter.getUserLatestTransactions.useQuery();
+    api.transactions.getUserLatestTransactions.useQuery();
 
-  const createMutation = api.transactionsRouter.createTransaction.useMutation();
+  const createMutation = api.transactions.createTransaction.useMutation();
 
   const formSchema = z.object({
     name: z.string({ message: "Transaction has to have a name" }).min(2, {
