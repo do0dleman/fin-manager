@@ -61,8 +61,8 @@ export const moneyAccounts = createTable(
   {
     id: serial("id").primaryKey(),
     name: varchar("name", { length: 64 }).notNull(),
-    amount: numeric("amount", { scale: 2, precision: 15 }),
-    user_id: text("user_id").references(() => users.id)
+    amount: numeric("amount", { scale: 2, precision: 15 }).notNull(),
+    user_id: text("user_id").references(() => users.id).notNull()
   }
 );
 export const transactions = createTable(
@@ -70,8 +70,8 @@ export const transactions = createTable(
   {
     id: serial("id").primaryKey(),
     user_id: text("user_id").references(() => users.id).notNull(),
-    account_id: integer("account_id").references(() => moneyAccounts.id),
-    name: varchar("name", { length: 64 }),
+    account_id: integer("account_id").references(() => moneyAccounts.id).notNull(),
+    name: varchar("name", { length: 64 }).notNull(),
     amount: numeric("amount", { scale: 2, precision: 12 }).notNull(),
     category: varchar("category", { length: 32 }),
     type: transactionTypeEnum("type").notNull()

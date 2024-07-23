@@ -6,14 +6,8 @@ import { Label } from "~/app/_components/ui/label";
 import { api } from "~/trpc/react";
 
 function BankAccounts() {
-  const userAuthData = useUser();
-  const userId = userAuthData.user!.id;
-
   const { data, isFetched, refetch } =
-    api.moneyAccounts.getUsersMoneyAccounts.useQuery(
-      { user_id: userId ?? "" },
-      { enabled: userId != undefined },
-    );
+    api.moneyAccounts.getUsersMoneyAccounts.useQuery();
 
   const createMutation = api.moneyAccounts.createMoneyAccounts.useMutation({
     onSuccess: () => refetch(),
@@ -23,34 +17,35 @@ function BankAccounts() {
   const [amount, setAmount] = useState(0);
 
   async function createNewAccount() {
-    if (!userId) return;
-
     createMutation.mutate({
       name: name,
       amount: amount,
-      user_id: userId,
     });
   }
 
   return (
     <div className="max-w-96">
-      <div className="mb-4 [&>input]:mb-1 [&>input]:text-2xl">
-        <Label htmlFor="name">Name</Label>
+      <div className="mb-4 [&>input]:mb-1">
+        <Label htmlFor="acc-name">Name</Label>
         <Input
-          id="name"
+          id="acc-name"
+          className="text-2xl"
           value={name}
           onChange={(e) => setName(e.target.value)}
         />
-        <Label htmlFor="amount">Amount</Label>
-        <Input
-          id="amount"
-          type="number"
-          value={amount}
-          onChange={(e) => setAmount(+e.target.value)}
-        />
-        <Button onClick={createNewAccount} disabled={!name}>
-          Create
-        </Button>
+        <Label htmlFor="acc-amount">Amount</Label>
+        <div className="flex gap-2">
+          <Input
+            id="acc-amount"
+            className="text-2xl"
+            type="number"
+            value={amount}
+            onChange={(e) => setAmount(+e.target.value)}
+          />
+          <Button onClick={createNewAccount} disabled={!name}>
+            Create
+          </Button>
+        </div>
       </div>
       <h2 className="mb-4 border-b">BankAccounts</h2>
       <div>

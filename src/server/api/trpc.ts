@@ -7,7 +7,7 @@
  * need to use are documented accordingly near the end.
  */
 import { getAuth } from "@clerk/nextjs/server";
-import { initTRPC } from "@trpc/server";
+import { initTRPC, TRPCError } from "@trpc/server";
 import { NextRequest } from "next/server";
 import superjson from "superjson";
 import { ZodError } from "zod";
@@ -90,3 +90,23 @@ export const createTRPCRouter = t.router;
  * are logged in.
  */
 export const publicProcedure = t.procedure;
+
+/**
+ * Authorized procedure
+ * 
+ * This procedure does not assume that the user has any specific roles (e.g. admin)
+ */
+export const authedProcedure = t.procedure
+  .use(async (opts) => {
+    const { ctx } = opts;
+
+    if (!ctx.auth?.userId) {
+      throw new TRPCError({ code: "UNAUTHORIZED" });
+    }
+
+    return opts.next({
+      ctx: {
+        auth: ctx.auth
+      }
+    })
+  })

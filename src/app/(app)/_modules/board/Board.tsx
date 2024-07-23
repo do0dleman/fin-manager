@@ -1,13 +1,14 @@
 "use-client";
 
-import { useUser } from "@clerk/nextjs";
 import { ResizablePanel } from "~/app/_components/ui/resizable";
 import BankAccounts from "./_components/BankAccounts";
+import Transactions from "./_components/transactions/Transactions";
 
 function Board() {
   return (
-    <ResizablePanel className="p-2 text-2xl">
+    <ResizablePanel className="flex gap-4 p-4 text-2xl">
       <BankAccounts />
+      <Transactions />
     </ResizablePanel>
   );
 }
