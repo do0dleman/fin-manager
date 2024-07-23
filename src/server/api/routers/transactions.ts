@@ -1,9 +1,9 @@
 import { TRPCError } from "@trpc/server";
-import { eq } from "drizzle-orm";
+import { desc, eq } from "drizzle-orm";
 import { z } from "zod";
 
 import { authedProcedure, createTRPCRouter } from "~/server/api/trpc";
-import { transactions } from "~/server/db/schema";
+import { moneyAccounts, transactions } from "~/server/db/schema";
 
 export const transactionsRouter = createTRPCRouter({
   getAccountTransactions: authedProcedure
@@ -18,7 +18,7 @@ export const transactionsRouter = createTRPCRouter({
     .query(async ({ ctx }) => {
       const transactionsList = await ctx.db.query.transactions.findMany({
         where: eq(transactions.user_id, ctx.auth.userId),
-        orderBy: transactions.id,
+        orderBy: desc(transactions.id),
         limit: 10
       })
       return {
@@ -33,7 +33,7 @@ export const transactionsRouter = createTRPCRouter({
       type: z.enum(['income', 'expense'])
     }))
     .mutation(async ({ input, ctx }) => {
-      const newMoneyAccount = await ctx.db
+      const newTransaction = await ctx.db
         .insert(transactions)
         .values({
           account_id: input.account_id,
@@ -43,13 +43,35 @@ export const transactionsRouter = createTRPCRouter({
           name: input.name
         }).returning()
 
-      if (!newMoneyAccount) {
+      if (!newTransaction[0]) {
         throw new TRPCError({
-          code: "BAD_REQUEST",
+          code: "INTERNAL_SERVER_ERROR",
           message: "Failled to create money account"
         })
       }
+      const moneyAccount = await ctx.db.query.moneyAccounts.findFirst({ where: eq(moneyAccounts.id, input.account_id) })
+      if (!moneyAccount) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+        })
+      }
 
-      return { message: `Created new money account with id ${newMoneyAccount[0]?.id}` }
+      let newAccountAmount = +moneyAccount.amount;
+
+      const transactionAmount = input.amount;
+      switch (input.type) {
+        case "income":
+          newAccountAmount += transactionAmount;
+          break;
+        case "expense":
+          newAccountAmount -= transactionAmount;
+          break;
+      }
+      
+      await ctx.db.update(moneyAccounts)
+        .set({ amount: `${newAccountAmount}` })
+        .where(eq(moneyAccounts.id, input.account_id))
+
+      return { message: `Created new money account with id ${newTransaction[0].id}` }
     })
 });

@@ -25,8 +25,7 @@ function TransactionForm() {
   const { data: accountsData } =
     api.moneyAccounts.getUsersMoneyAccounts.useQuery();
 
-  const { refetch } =
-    api.transactions.getUserLatestTransactions.useQuery();
+  const utils = api.useUtils();
 
   const createMutation = api.transactions.createTransaction.useMutation();
 
@@ -53,7 +52,7 @@ function TransactionForm() {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    void createMutation.mutateAsync({
+    await createMutation.mutateAsync({
       name: values.name,
       account_id: values.accountId,
       amount: values.amount,
@@ -61,7 +60,12 @@ function TransactionForm() {
     });
 
     form.reset();
-    void refetch();
+    void utils.transactions.getUserLatestTransactions.invalidate(undefined, {
+      refetchType: "all",
+    });
+    void utils.moneyAccounts.getUsersMoneyAccounts.invalidate(undefined, {
+      refetchType: "all",
+    });
   }
 
   return (
