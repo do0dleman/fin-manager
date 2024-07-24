@@ -9,12 +9,20 @@ function Transactions() {
       <TransactionForm />
       <h2 className="mb-4 border-b">Latest Transactions</h2>
       <div>
-        {data?.transactions.map((transaction) => (
-          <div key={`ac-${transaction.id}`} className="flex justify-between">
-            <span>{transaction.name}</span>
-            <span>{transaction.amount}</span>
-          </div>
-        )) ?? <></>}
+        {data?.transactions.map((transaction) => {
+          const isExpense = transaction.type == "expense";
+          return (
+            <div key={`ac-${transaction.id}`} className="flex justify-between">
+              <span>{transaction.name}</span>
+              <span
+                className={`${isExpense ? "text-destructive" : "text-positive"}`}
+              >
+                {isExpense ? "-" : "+"}
+                {transaction.amount}
+              </span>
+            </div>
+          );
+        })}
       </div>
     </div>
   );
