@@ -15,11 +15,12 @@ export const transactionsRouter = createTRPCRouter({
       };
     }),
   getUserLatestTransactions: authedProcedure
-    .query(async ({ ctx }) => {
+    .input(z.object({ transactionAmount: z.number().int().max(10) }))
+    .query(async ({ ctx, input }) => {
       const transactionsList = await ctx.db.query.transactions.findMany({
         where: eq(transactions.user_id, ctx.auth.userId),
         orderBy: desc(transactions.id),
-        limit: 10
+        limit: input.transactionAmount
       })
       return {
         transactions: transactionsList
@@ -67,7 +68,7 @@ export const transactionsRouter = createTRPCRouter({
           newAccountAmount -= transactionAmount;
           break;
       }
-      
+
       await ctx.db.update(moneyAccounts)
         .set({ amount: `${newAccountAmount}` })
         .where(eq(moneyAccounts.id, input.account_id))

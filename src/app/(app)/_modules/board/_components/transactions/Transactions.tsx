@@ -1,10 +1,11 @@
 import { api } from "~/trpc/react";
-import TransactionForm from "./components/TransactionForm";
 import { TransactionModal } from "./components/TransactionModal";
 import { Button } from "~/app/_components/ui/button";
 
 function Transactions() {
-  const { data } = api.transactions.getUserLatestTransactions.useQuery();
+  const { data } = api.transactions.getUserLatestTransactions.useQuery({
+    transactionAmount: 5,
+  });
 
   return (
     <div className="max-w-96">
