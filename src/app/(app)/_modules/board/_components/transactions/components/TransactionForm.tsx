@@ -142,13 +142,15 @@ function TransactionForm() {
             <FormItem>
               <FormLabel>Amount</FormLabel>
               <FormControl>
-                <Input className="text-xl" {...field} />
+                <div className="flex gap-2">
+                  <Input className="text-xl" {...field} />
+                  <Button type="submit">Submit</Button>
+                </div>
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-        <Button type="submit">Submit</Button>
       </form>
     </Form>
   );
