@@ -13,7 +13,9 @@ import {
 import { Input } from "~/app/_components/ui/input";
 import { api } from "~/trpc/react";
 
-function MoneyAccountsForm() {
+function MoneyAccountsForm(props: { onSuccessSubmit?: () => void }) {
+  const { onSuccessSubmit } = props;
+
   const createMutation = api.moneyAccounts.createMoneyAccounts.useMutation({});
 
   const utils = api.useUtils();
@@ -40,6 +42,9 @@ function MoneyAccountsForm() {
     });
 
     form.reset();
+    if (onSuccessSubmit) {
+      onSuccessSubmit();
+    }
     void utils.moneyAccounts.getUsersMoneyAccounts.invalidate(undefined, {
       refetchType: "all",
     });

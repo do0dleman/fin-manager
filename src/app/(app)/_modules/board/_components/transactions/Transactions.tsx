@@ -1,13 +1,23 @@
 import { api } from "~/trpc/react";
 import TransactionForm from "./components/TransactionForm";
+import { TransactionModal } from "./components/TransactionModal";
+import { Button } from "~/app/_components/ui/button";
 
 function Transactions() {
   const { data } = api.transactions.getUserLatestTransactions.useQuery();
 
   return (
     <div className="max-w-96">
-      <TransactionForm />
-      <h2 className="mb-4 border-b">Latest Transactions</h2>
+      <div className="mb-4 flex gap-2 border-b p-1 align-bottom">
+        <h2 className="h-fit">Latest Transactions</h2>
+        <TransactionModal
+          OpenButton={
+            <Button variant="secondary" className="aspect-aquare h-fit py-1">
+              add
+            </Button>
+          }
+        />
+      </div>
       <div>
         {data?.transactions.map((transaction) => {
           const isExpense = transaction.type == "expense";

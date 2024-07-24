@@ -21,7 +21,9 @@ import {
 } from "~/app/_components/ui/select";
 import { api } from "~/trpc/react";
 
-function TransactionForm() {
+function TransactionForm(props: { onSuccessSubmit?: () => void }) {
+  const { onSuccessSubmit } = props;
+
   const { data: accountsData } =
     api.moneyAccounts.getUsersMoneyAccounts.useQuery();
 
@@ -60,6 +62,9 @@ function TransactionForm() {
     });
 
     form.reset();
+    if (onSuccessSubmit) {
+      onSuccessSubmit();
+    }
     void utils.transactions.getUserLatestTransactions.invalidate(undefined, {
       refetchType: "all",
     });
