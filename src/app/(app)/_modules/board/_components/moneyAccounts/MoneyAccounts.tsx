@@ -1,14 +1,24 @@
 import { api } from "~/trpc/react";
 import { MoneyAccountModal } from "./components/MoneyAccountModal";
 import { Button } from "~/app/_components/ui/button";
+import { useMemo } from "react";
 
 function MoneyAccounts() {
   const { data } = api.moneyAccounts.getUsersMoneyAccounts.useQuery();
 
+  const totalMoney = useMemo(() => {
+    if (!data) {
+      return 0;
+    }
+    return data?.moneyAccounts
+      .map((acc) => +acc.amount)
+      .reduce((acc, v) => acc + v);
+  }, [data]);
+
   return (
-    <div className="w-60">
+    <div className="min-w-60">
       <div className="mb-4 flex justify-between gap-2 border-b p-1">
-        <h2 className="">BankAccounts</h2>
+        <h2 className="">Money Accounts</h2>
         <MoneyAccountModal
           OpenButton={
             <Button variant="secondary" className="aspect-aquare h-fit py-1">
@@ -32,6 +42,10 @@ function MoneyAccounts() {
               </div>
             </div>
           ))}
+        <div className="mt-2 flex w-full justify-between border-t">
+          <span>Total:</span>
+          <span className="font-bold">{totalMoney}</span>
+        </div>
       </div>
     </div>
   );

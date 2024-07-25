@@ -19,6 +19,7 @@ import {
 } from "~/app/_components/ui/chart";
 import { api } from "~/trpc/react";
 import { useMemo } from "react";
+import MoneyAccounts from "./MoneyAccounts";
 
 export function MoneyAccountChart() {
   const { data: chartData } =
@@ -48,14 +49,15 @@ export function MoneyAccountChart() {
 
   return (
     <Card className="flex h-fit flex-col">
-      <CardHeader className="items-center pb-0">
+      <CardHeader className="items-center pb-4">
         <CardTitle>Your Money Accounts</CardTitle>
         <CardDescription>Current Data</CardDescription>
       </CardHeader>
-      <CardContent className="flex-1 pb-0">
+      <CardContent className="flex gap-12 pb-4">
+        <MoneyAccounts />
         <ChartContainer
           config={chartConfig}
-          className="mx-auto aspect-square max-h-[300px]"
+          className="mx-auto aspect-square min-w-60"
         >
           <PieChart>
             <ChartTooltip
