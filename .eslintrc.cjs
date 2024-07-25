@@ -58,6 +58,7 @@ const config = {
         ]
       }
     ]
-  }
+  },
+  ignorePatterns: ["src/app/_components/"]
 }
 module.exports = config;
