@@ -62,7 +62,8 @@ export const moneyAccounts = createTable(
     id: serial("id").primaryKey(),
     name: varchar("name", { length: 64 }).notNull(),
     amount: numeric("amount", { scale: 2, precision: 15 }).notNull(),
-    user_id: text("user_id").references(() => users.id).notNull()
+    user_id: text("user_id").references(() => users.id).notNull(),
+    color: varchar("color", { length: 7 }).default("#0000ff").notNull()
   }
 );
 export const transactions = createTable(

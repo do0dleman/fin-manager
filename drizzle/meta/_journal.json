@@ -36,6 +36,13 @@
       "when": 1721630835324,
       "tag": "0004_brief_tattoo",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "6",
+      "when": 1721818777542,
+      "tag": "0005_futuristic_meteorite",
+      "breakpoints": true
     }
   ]
 }

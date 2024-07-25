@@ -21,9 +21,14 @@ function MoneyAccounts() {
         {data?.moneyAccounts
           .sort((a, b) => +b.amount - +a.amount)
           .map((account) => (
-            <div key={`ac-${account.id}`} className="flex justify-between">
-              <span>{account.name}</span>
-              <span>{account.amount}</span>
+            <div key={`ac-${account.id}`} className="flex items-center gap-2">
+              <div
+                className={`aspect-square h-5 w-5 rounded-full bg-[${account.color}]`}
+              />
+              <div className="flex w-full justify-between">
+                <span>{account.name}</span>
+                <span>{account.amount}</span>
+              </div>
             </div>
           ))}
       </div>
