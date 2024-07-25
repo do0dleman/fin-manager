@@ -17,6 +17,7 @@ const config = {
     "@typescript-eslint/array-type": "off",
     "@typescript-eslint/no-empty-interface": "warn",
     "@typescript-eslint/consistent-type-definitions": "off",
+    "@typescript-eslint/ban-ts-comment": "off",
     "@typescript-eslint/consistent-type-imports": [
       "warn",
       {

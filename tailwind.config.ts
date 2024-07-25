@@ -55,6 +55,8 @@ const config = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        // Money Accounts' / Wallets' colors
+        blue: "hsl(var(--blue))"
       },
       borderRadius: {
         lg: "var(--radius)",

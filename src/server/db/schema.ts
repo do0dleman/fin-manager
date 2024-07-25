@@ -42,6 +42,9 @@ export const posts = createTable(
 
 export const statusEnum = pgEnum('status', ['active', 'inactive', 'canceled']);
 export const transactionTypeEnum = pgEnum('type', ['income', 'expense']);
+export const accountColorEnum = pgEnum('color', [
+  'red', 'orange', 'yellow', 'green', 'cyan', 'blue', 'purple'
+]);
 
 export const users = createTable(
   "users",
@@ -63,7 +66,7 @@ export const moneyAccounts = createTable(
     name: varchar("name", { length: 64 }).notNull(),
     amount: numeric("amount", { scale: 2, precision: 15 }).notNull(),
     user_id: text("user_id").references(() => users.id).notNull(),
-    color: varchar("color", { length: 7 }).default("#0000ff").notNull()
+    color: accountColorEnum("color").default('blue').notNull()
   }
 );
 export const transactions = createTable(

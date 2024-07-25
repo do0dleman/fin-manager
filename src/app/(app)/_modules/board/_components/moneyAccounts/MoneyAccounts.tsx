@@ -6,8 +6,8 @@ function MoneyAccounts() {
   const { data } = api.moneyAccounts.getUsersMoneyAccounts.useQuery();
 
   return (
-    <div className="max-w-96">
-      <div className="mb-4 flex gap-2 border-b p-1">
+    <div className="w-60">
+      <div className="mb-4 flex justify-between gap-2 border-b p-1">
         <h2 className="">BankAccounts</h2>
         <MoneyAccountModal
           OpenButton={
@@ -23,7 +23,8 @@ function MoneyAccounts() {
           .map((account) => (
             <div key={`ac-${account.id}`} className="flex items-center gap-2">
               <div
-                className={`aspect-square h-5 w-5 rounded-full bg-[${account.color}]`}
+                className={`aspect-square h-5 w-5 rounded-full`}
+                style={{ background: `var(--${account.color})` }}
               />
               <div className="flex w-full justify-between">
                 <span>{account.name}</span>
