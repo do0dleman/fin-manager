@@ -17,7 +17,7 @@ export function MoneyAccountModal(props: { OpenButton: JSX.Element }) {
       <DialogTrigger asChild>{OpenButton}</DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Create Transaction</DialogTitle>
+          <DialogTitle>Create Money Account</DialogTitle>
         </DialogHeader>
         <MoneyAccountsForm onSuccessSubmit={() => setOpen(false)} />
       </DialogContent>

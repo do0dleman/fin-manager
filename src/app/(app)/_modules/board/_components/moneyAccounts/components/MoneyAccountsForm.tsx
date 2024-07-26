@@ -76,6 +76,36 @@ function MoneyAccountsForm(props: { onSuccessSubmit?: () => void }) {
         />
         <FormField
           control={form.control}
+          name="color"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Account Color</FormLabel>
+              <FormControl>
+                <RadioGroup
+                  {...field}
+                  className="flex gap-[2%]"
+                  onValueChange={field.onChange}
+                >
+                  {accountColors.map((color) => (
+                    <RadioGroupPrimitive.Item
+                      className="relative z-0 aspect-square w-full rounded-sm transition-all duration-100 checked:border-2 hover:opacity-85 active:opacity-65"
+                      style={{ background: `var(--${color})` }}
+                      value={color}
+                      id={`macc-r-c-${color}`}
+                      key={`macc-r-c-${color}`}
+                    >
+                      <RadioGroupPrimitive.Indicator className="absolute inset-0 m-auto aspect-square w-1/2 rounded-full bg-foreground" />
+                      <RadioGroupPrimitive.Indicator className="absolute inset-0 -z-10 m-auto aspect-square w-1/2 rounded-full bg-background opacity-45 blur-sm" />
+                    </RadioGroupPrimitive.Item>
+                  ))}
+                </RadioGroup>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
           name="amount"
           render={({ field }) => (
             <FormItem>
@@ -85,36 +115,6 @@ function MoneyAccountsForm(props: { onSuccessSubmit?: () => void }) {
                   <Input className="text-xl" {...field} />
                   <Button>Create</Button>
                 </div>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="color"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Account Color</FormLabel>
-              <FormControl>
-                <RadioGroup
-                  {...field}
-                  className="flex gap-2"
-                  onValueChange={field.onChange}
-                >
-                  {accountColors.map((color) => (
-                    <RadioGroupPrimitive.Item
-                      className="relative z-0 aspect-square w-8 rounded-sm transition-all duration-100 checked:border-2 hover:opacity-85 active:opacity-65"
-                      style={{ background: `var(--${color})` }}
-                      value={color}
-                      id={`macc-r-c-${color}`}
-                      key={`macc-r-c-${color}`}
-                    >
-                      <RadioGroupPrimitive.Indicator className="absolute inset-0 m-auto aspect-square w-4 rounded-full bg-foreground" />
-                      <RadioGroupPrimitive.Indicator className="absolute inset-0 -z-10 m-auto aspect-square w-4 rounded-full bg-background opacity-45 blur-sm" />
-                    </RadioGroupPrimitive.Item>
-                  ))}
-                </RadioGroup>
               </FormControl>
               <FormMessage />
             </FormItem>
