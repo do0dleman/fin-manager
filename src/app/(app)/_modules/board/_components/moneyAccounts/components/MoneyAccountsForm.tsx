@@ -1,7 +1,9 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { accountColors } from "~/app/(app)/_models/AccountColor";
 import { Button } from "~/app/_components/ui/button";
+import * as RadioGroupPrimitive from "@radix-ui/react-radio-group";
 import {
   Form,
   FormControl,
@@ -11,6 +13,7 @@ import {
   FormMessage,
 } from "~/app/_components/ui/form";
 import { Input } from "~/app/_components/ui/input";
+import { RadioGroup } from "~/app/_components/ui/radio-group";
 import { api } from "~/trpc/react";
 
 function MoneyAccountsForm(props: { onSuccessSubmit?: () => void }) {
@@ -25,6 +28,7 @@ function MoneyAccountsForm(props: { onSuccessSubmit?: () => void }) {
       message: "Name must be at least 2 characters.",
     }),
     amount: z.coerce.number({ message: "Amount has to be a number" }),
+    color: z.enum(accountColors, { message: "Please select a color" }),
   });
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -39,6 +43,7 @@ function MoneyAccountsForm(props: { onSuccessSubmit?: () => void }) {
     await createMutation.mutateAsync({
       name: values.name,
       amount: values.amount,
+      color: values.color,
     });
 
     form.reset();
@@ -80,6 +85,36 @@ function MoneyAccountsForm(props: { onSuccessSubmit?: () => void }) {
                   <Input className="text-xl" {...field} />
                   <Button>Create</Button>
                 </div>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="color"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Account Color</FormLabel>
+              <FormControl>
+                <RadioGroup
+                  {...field}
+                  className="flex gap-2"
+                  onValueChange={field.onChange}
+                >
+                  {accountColors.map((color) => (
+                    <RadioGroupPrimitive.Item
+                      className="relative z-0 aspect-square w-8 rounded-sm transition-all duration-100 checked:border-2 hover:opacity-85 active:opacity-65"
+                      style={{ background: `var(--${color})` }}
+                      value={color}
+                      id={`macc-r-c-${color}`}
+                      key={`macc-r-c-${color}`}
+                    >
+                      <RadioGroupPrimitive.Indicator className="absolute inset-0 m-auto aspect-square w-4 rounded-full bg-foreground" />
+                      <RadioGroupPrimitive.Indicator className="absolute inset-0 -z-10 m-auto aspect-square w-4 rounded-full bg-background opacity-45 blur-sm" />
+                    </RadioGroupPrimitive.Item>
+                  ))}
+                </RadioGroup>
               </FormControl>
               <FormMessage />
             </FormItem>

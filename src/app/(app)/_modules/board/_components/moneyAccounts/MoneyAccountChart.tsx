@@ -7,7 +7,6 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "~/app/_components/ui/card";
@@ -57,7 +56,7 @@ export function MoneyAccountChart() {
         <MoneyAccounts />
         <ChartContainer
           config={chartConfig}
-          className="mx-auto aspect-square min-w-60"
+          className="mx-auto aspect-square min-w-[300px]"
         >
           <PieChart>
             <ChartTooltip

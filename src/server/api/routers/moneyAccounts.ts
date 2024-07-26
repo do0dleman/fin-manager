@@ -1,6 +1,7 @@
 import { TRPCError } from "@trpc/server";
 import { eq } from "drizzle-orm";
 import { z } from "zod";
+import { accountColors } from "~/app/(app)/_models/AccountColor";
 
 import { authedProcedure, createTRPCRouter } from "~/server/api/trpc";
 import { moneyAccounts } from "~/server/db/schema";
@@ -15,13 +16,14 @@ export const moneyAccountsRouter = createTRPCRouter({
       };
     }),
   createMoneyAccounts: authedProcedure
-    .input(z.object({ name: z.string(), amount: z.number() }))
+    .input(z.object({ name: z.string(), amount: z.number(), color: z.enum(accountColors) }))
     .mutation(async ({ input, ctx }) => {
       const newMoneyAccount = await ctx.db
         .insert(moneyAccounts)
         .values({
           name: input.name,
           amount: `${input.amount}`,
+          color: input.color,
           user_id: ctx.auth.userId,
         }).returning()
 
