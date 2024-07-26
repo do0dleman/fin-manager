@@ -1,5 +1,5 @@
 import { TRPCError } from "@trpc/server";
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { z } from "zod";
 import { accountColors } from "~/app/(app)/_models/AccountColor";
 
@@ -35,5 +35,21 @@ export const moneyAccountsRouter = createTRPCRouter({
       }
 
       return { message: `Created new money account with id ${newMoneyAccount[0]?.id}` }
+    }),
+  deleteMoneyAccount: authedProcedure
+    .input(z.object({ accountId: z.number() }))
+    .mutation(async ({ ctx, input }) => {
+      const deletedIds = await ctx.db.delete(moneyAccounts)
+        .where(and(
+          eq(moneyAccounts.user_id, ctx.auth.userId),
+          eq(moneyAccounts.id, input.accountId))
+        )
+        .returning({ deltedId: moneyAccounts.id })
+
+      if (!deletedIds) {
+        throw new TRPCError({ code: "INTERNAL_SERVER_ERROR" })
+      }
+
+      return { message: `Deleted account id: ${deletedIds[0]?.deltedId}` }
     })
 });

@@ -2,6 +2,7 @@ import { api } from "~/trpc/react";
 import { MoneyAccountModal } from "./components/MoneyAccountModal";
 import { Button } from "~/app/_components/ui/button";
 import { useMemo } from "react";
+import MoneyAccountDelete from "./components/MoneyAccountDelete";
 
 function MoneyAccounts() {
   const { data } = api.moneyAccounts.getUsersMoneyAccounts.useQuery();
@@ -38,7 +39,10 @@ function MoneyAccounts() {
               />
               <div className="flex w-full justify-between">
                 <span>{account.name}</span>
-                <span>{account.amount}</span>
+                <div className="flex items-center gap-2">
+                  <span>{account.amount}</span>
+                  <MoneyAccountDelete accountId={account.id} />
+                </div>
               </div>
             </div>
           ))}
