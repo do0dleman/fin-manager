@@ -1,6 +1,7 @@
 import { TRPCError } from "@trpc/server";
 import { desc, eq } from "drizzle-orm";
 import { z } from "zod";
+import { transactionCategories } from "~/models/TransactionCategory";
 
 import { authedProcedure, createTRPCRouter } from "~/server/api/trpc";
 import { moneyAccounts, transactions } from "~/server/db/schema";
@@ -31,7 +32,8 @@ export const transactionsRouter = createTRPCRouter({
       account_id: z.number(),
       name: z.string(),
       amount: z.number(),
-      type: z.enum(['income', 'expense'])
+      type: z.enum(['income', 'expense']),
+      category: z.enum(transactionCategories)
     }))
     .mutation(async ({ input, ctx }) => {
       const newTransaction = await ctx.db
@@ -41,7 +43,8 @@ export const transactionsRouter = createTRPCRouter({
           type: input.type,
           amount: `${input.amount}`,
           user_id: ctx.auth.userId,
-          name: input.name
+          name: input.name,
+          category: input.category
         }).returning()
 
       if (!newTransaction[0]) {

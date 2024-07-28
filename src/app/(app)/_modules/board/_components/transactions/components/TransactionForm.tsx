@@ -19,7 +19,23 @@ import {
   SelectTrigger,
   SelectValue,
 } from "~/app/_components/ui/select";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "~/app/_components/ui/popover";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "~/app/_components/ui/command";
 import { api } from "~/trpc/react";
+import { transactionCategories } from "~/models/TransactionCategory";
+import { cn } from "~/lib/utils";
+import { Check, ChevronsUpDown } from "lucide-react";
 
 function TransactionForm(props: { onSuccessSubmit?: () => void }) {
   const { onSuccessSubmit } = props;
@@ -41,6 +57,7 @@ function TransactionForm(props: { onSuccessSubmit?: () => void }) {
         message: "Amount cannot be 0",
       }),
     type: z.enum(["income", "expense"]),
+    category: z.enum(transactionCategories),
     accountId: z.coerce.number(),
   });
 
@@ -59,6 +76,7 @@ function TransactionForm(props: { onSuccessSubmit?: () => void }) {
       account_id: values.accountId,
       amount: values.amount,
       type: values.type,
+      category: values.category,
     });
 
     form.reset();
@@ -136,6 +154,64 @@ function TransactionForm(props: { onSuccessSubmit?: () => void }) {
                   ))}
                 </SelectContent>
               </Select>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="category"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="mt-4 block">Transaction category</FormLabel>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <FormControl>
+                    <Button
+                      variant="outline"
+                      role="combobox"
+                      className={cn(
+                        "w-full justify-between",
+                        !field.value && "text-muted-foreground",
+                      )}
+                    >
+                      {field.value ?? "Select a category"}
+                      <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                    </Button>
+                  </FormControl>
+                </PopoverTrigger>
+                <PopoverContent className="w-[200px p-0">
+                  <Command>
+                    <CommandInput placeholder="Search category..." />
+                    <CommandList>
+                      <CommandEmpty>No category found.</CommandEmpty>
+                      <CommandGroup>
+                        {transactionCategories.map((category) => (
+                          <CommandItem
+                            className="data-[disabled='true']"
+                            value={category}
+                            key={`ctran-cat-${category}`}
+                            disabled={false}
+                            onSelect={() => {
+                              form.setValue("category", category);
+                            }}
+                          >
+                            <Check
+                              className={cn(
+                                "mr-2 h-4 w-4",
+                                category === field.value
+                                  ? "opacity-100"
+                                  : "opacity-0",
+                              )}
+                            />
+                            {category}
+                          </CommandItem>
+                        ))}
+                      </CommandGroup>
+                    </CommandList>
+                  </Command>
+                </PopoverContent>
+              </Popover>
               <FormMessage />
             </FormItem>
           )}
