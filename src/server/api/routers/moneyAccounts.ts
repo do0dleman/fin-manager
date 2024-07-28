@@ -1,7 +1,7 @@
 import { TRPCError } from "@trpc/server";
 import { and, eq } from "drizzle-orm";
 import { z } from "zod";
-import { accountColors } from "~/app/(app)/_models/AccountColor";
+import { accountColors } from "~/models/AccountColor";
 
 import { authedProcedure, createTRPCRouter } from "~/server/api/trpc";
 import { moneyAccounts } from "~/server/db/schema";

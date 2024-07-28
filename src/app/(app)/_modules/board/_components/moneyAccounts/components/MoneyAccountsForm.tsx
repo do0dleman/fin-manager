@@ -1,7 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { accountColors } from "~/app/(app)/_models/AccountColor";
+import { accountColors } from "~/models/AccountColor";
 import { Button } from "~/app/_components/ui/button";
 import * as RadioGroupPrimitive from "@radix-ui/react-radio-group";
 import {

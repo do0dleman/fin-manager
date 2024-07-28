@@ -14,6 +14,8 @@ import {
   numeric,
   integer
 } from "drizzle-orm/pg-core";
+import { accountColors } from "~/models/AccountColor";
+import { transactionCategories } from "~/models/TransactionCategory";
 
 /**
  * This is an example of how to use the multi-project schema feature of Drizzle ORM. Use the same
@@ -42,9 +44,8 @@ export const posts = createTable(
 
 export const statusEnum = pgEnum('status', ['active', 'inactive', 'canceled']);
 export const transactionTypeEnum = pgEnum('type', ['income', 'expense']);
-export const accountColorEnum = pgEnum('color', [
-  'red', 'orange', 'yellow', 'green', 'cyan', 'blue', 'purple'
-]);
+export const accountColorEnum = pgEnum('color', accountColors);
+export const transactionCategoryEnum = pgEnum('category', transactionCategories);
 
 export const users = createTable(
   "users",
@@ -77,7 +78,7 @@ export const transactions = createTable(
     account_id: integer("account_id").references(() => moneyAccounts.id).notNull(),
     name: varchar("name", { length: 64 }).notNull(),
     amount: numeric("amount", { scale: 2, precision: 12 }).notNull(),
-    category: varchar("category", { length: 32 }),
+    category: transactionCategoryEnum("category").default("Other"),
     type: transactionTypeEnum("type").notNull()
   }
 );
