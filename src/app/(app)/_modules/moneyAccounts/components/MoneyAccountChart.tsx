@@ -18,7 +18,12 @@ export function MoneyAccountChart() {
 
   const chartConfig = useMemo(() => {
     const config: ChartConfig = {};
-    if (!chartData) return {};
+    if (!chartData)
+      return {
+        amount: {
+          label: "Amount",
+        },
+      };
 
     chartData.moneyAccounts.forEach((acc) => {
       config[acc.name] = {
@@ -41,13 +46,11 @@ export function MoneyAccountChart() {
   return (
     <ChartContainer
       config={chartConfig}
+      // config={{}}
       className="mx-auto aspect-square min-w-[300px]"
     >
       <PieChart>
-        <ChartTooltip
-          cursor={false}
-          content={<ChartTooltipContent hideLabel />}
-        />
+        <ChartTooltip cursor={true} content={<ChartTooltipContent />} />
         <Pie
           data={chartData?.moneyAccounts.map((acc) => ({
             ...acc,

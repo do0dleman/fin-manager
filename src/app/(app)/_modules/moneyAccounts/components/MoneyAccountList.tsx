@@ -17,7 +17,7 @@ function MoneyAccountList() {
   }, [data]);
 
   return (
-    <div className="min-w-60">
+    <div className="w-full min-w-60">
       <div className="mb-4 flex justify-between gap-2 border-b p-1">
         <h2 className="">Money Accounts</h2>
         <MoneyAccountModal

@@ -1,41 +1,27 @@
-import { api } from "~/trpc/react";
-import { TransactionModal } from "./components/TransactionModal";
-import { Button } from "~/app/_components/ui/button";
+import React from "react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "~/app/_components/ui/card";
+import TransactionList from "./components/TransactionList";
+import { TransactionChart } from "./components/TransactionChart";
 
 function Transactions() {
-  const { data } = api.transactions.getUserLatestTransactions.useQuery({
-    transactionAmount: 5,
-  });
-
   return (
-    <div className="max-w-96">
-      <div className="mb-4 flex gap-2 border-b p-1 align-bottom">
-        <h2 className="h-fit">Latest Transactions</h2>
-        <TransactionModal
-          OpenButton={
-            <Button variant="secondary" className="aspect-aquare h-fit py-1">
-              add
-            </Button>
-          }
-        />
-      </div>
-      <div>
-        {data?.transactions.map((transaction) => {
-          const isExpense = transaction.type == "expense";
-          return (
-            <div key={`ac-${transaction.id}`} className="flex justify-between">
-              <span>{transaction.name}</span>
-              <span
-                className={`${isExpense ? "text-destructive" : "text-positive"}`}
-              >
-                {isExpense ? "-" : "+"}
-                {transaction.amount}
-              </span>
-            </div>
-          );
-        })}
-      </div>
-    </div>
+    <Card className="flex h-fit flex-col">
+      <CardHeader className="items-center pb-4">
+        <CardTitle>Your Money Accounts</CardTitle>
+        <CardDescription>Current Data</CardDescription>
+      </CardHeader>
+      <CardContent className="flex gap-12 pb-4">
+        <TransactionList />
+        <TransactionChart />
+      </CardContent>
+    </Card>
   );
 }
+
 export default Transactions;
