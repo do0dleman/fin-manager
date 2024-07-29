@@ -1,0 +1,1 @@
+ALTER TABLE "fin-manager_transactions" ADD COLUMN "created_at" timestamp with time zone DEFAULT CURRENT_TIMESTAMP NOT NULL;

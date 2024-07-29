@@ -74,6 +74,9 @@ export const transactions = createTable(
   "transactions",
   {
     id: serial("id").primaryKey(),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .default(sql`CURRENT_TIMESTAMP`)
+      .notNull(),
     user_id: text("user_id").references(() => users.id).notNull(),
     account_id: integer("account_id").references(() => moneyAccounts.id).notNull(),
     name: varchar("name", { length: 64 }).notNull(),

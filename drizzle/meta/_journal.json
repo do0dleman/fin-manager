@@ -22,6 +22,20 @@
       "when": 1722160541195,
       "tag": "0002_past_paper_doll",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "6",
+      "when": 1722226142027,
+      "tag": "0003_left_white_tiger",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "6",
+      "when": 1722228270584,
+      "tag": "0004_polite_guardsmen",
+      "breakpoints": true
     }
   ]
 }

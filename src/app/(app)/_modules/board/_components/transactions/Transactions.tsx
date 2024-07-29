@@ -1,7 +1,6 @@
 import { api } from "~/trpc/react";
 import { TransactionModal } from "./components/TransactionModal";
 import { Button } from "~/app/_components/ui/button";
-import TransactionForm from "./components/TransactionForm";
 
 function Transactions() {
   const { data } = api.transactions.getUserLatestTransactions.useQuery({
@@ -10,7 +9,6 @@ function Transactions() {
 
   return (
     <div className="max-w-96">
-      <TransactionForm />
       <div className="mb-4 flex gap-2 border-b p-1 align-bottom">
         <h2 className="h-fit">Latest Transactions</h2>
         <TransactionModal

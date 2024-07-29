@@ -33,7 +33,11 @@ import {
   CommandList,
 } from "~/app/_components/ui/command";
 import { api } from "~/trpc/react";
-import { transactionCategories } from "~/models/TransactionCategory";
+import {
+  expenseTransactionCategories,
+  incomeTransactionCategories,
+  transactionCategories,
+} from "~/models/TransactionCategory";
 import { cn } from "~/lib/utils";
 import { Check, ChevronsUpDown } from "lucide-react";
 
@@ -90,6 +94,11 @@ function TransactionForm(props: { onSuccessSubmit?: () => void }) {
       refetchType: "all",
     });
   }
+
+  const transactionCategoriesArr =
+    form.getValues("type") === "expense"
+      ? expenseTransactionCategories
+      : incomeTransactionCategories;
 
   return (
     <Form {...form}>
@@ -186,9 +195,8 @@ function TransactionForm(props: { onSuccessSubmit?: () => void }) {
                     <CommandList>
                       <CommandEmpty>No category found.</CommandEmpty>
                       <CommandGroup>
-                        {transactionCategories.map((category) => (
+                        {transactionCategoriesArr.map((category) => (
                           <CommandItem
-                            className="data-[disabled='true']"
                             value={category}
                             key={`ctran-cat-${category}`}
                             disabled={false}
