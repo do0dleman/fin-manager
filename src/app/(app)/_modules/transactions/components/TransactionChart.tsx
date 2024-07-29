@@ -70,10 +70,7 @@ export function TransactionChart() {
   return (
     <div className="flex flex-col items-center justify-center">
       <h2 className="mb-4">Last Month</h2>
-      <ChartContainer
-        config={chartConfig}
-        className="max-h-[300px] min-h-[200px] min-w-[250px]"
-      >
+      <ChartContainer config={chartConfig} className="min-h-[250px]">
         <BarChart accessibilityLayer data={chartData}>
           <CartesianGrid vertical={false} />
           <YAxis

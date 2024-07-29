@@ -16,7 +16,7 @@ function Transactions() {
         <CardTitle>Your Transactions</CardTitle>
         <CardDescription>Current Data</CardDescription>
       </CardHeader>
-      <CardContent className="flex gap-12 pb-4">
+      <CardContent className="flex gap-2 pb-4">
         <TransactionList />
         <TransactionChart />
       </CardContent>
