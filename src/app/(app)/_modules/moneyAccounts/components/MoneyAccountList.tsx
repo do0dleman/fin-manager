@@ -1,10 +1,10 @@
 import { api } from "~/trpc/react";
-import { MoneyAccountModal } from "./components/MoneyAccountModal";
+import { MoneyAccountModal } from "./MoneyAccountModal";
 import { Button } from "~/app/_components/ui/button";
 import { useMemo } from "react";
-import MoneyAccountDelete from "./components/MoneyAccountDelete";
+import MoneyAccountDelete from "./MoneyAccountDelete";
 
-function MoneyAccounts() {
+function MoneyAccountList() {
   const { data } = api.moneyAccounts.getUsersMoneyAccounts.useQuery();
 
   const totalMoney = useMemo(() => {
@@ -54,4 +54,4 @@ function MoneyAccounts() {
     </div>
   );
 }
-export default MoneyAccounts;
+export default MoneyAccountList;
