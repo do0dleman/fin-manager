@@ -13,7 +13,7 @@ function Transactions() {
   return (
     <Card className="flex h-fit flex-col">
       <CardHeader className="items-center pb-4">
-        <CardTitle>Your Money Accounts</CardTitle>
+        <CardTitle>Your Transactions</CardTitle>
         <CardDescription>Current Data</CardDescription>
       </CardHeader>
       <CardContent className="flex gap-12 pb-4">
