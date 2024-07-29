@@ -31,20 +31,26 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 export function TransactionChart() {
-  const { data } = api.transactions.getUserLatestTransactions.useQuery({
-    transactionAmount: 5,
+  const year = new Date().getFullYear();
+  const month = (new Date().getMonth() + 1).toString().padStart(2, "0");
+  const day = new Date().getDate().toString().padStart(2, "0");
+  console.log(new Date().getDate());
+
+  const { data } = api.transactions.getPeriodTransactions.useQuery({
+    stratDate: `${year}-${month}-01`,
+    endDate: `${year}-${month}-${day}`,
   });
 
   const { chartData, maxSum } = useMemo(() => {
     const incomeSum = data?.transactions
       .filter((tran) => tran.type === "income")
       .map((tran) => +tran.amount)
-      .reduce((v, acc) => acc + v);
+      .reduce((v, acc) => acc + v, 0);
 
     const expenseSum = data?.transactions
       .filter((tran) => tran.type === "expense")
       .map((tran) => +tran.amount)
-      .reduce((v, acc) => acc + v);
+      .reduce((v, acc) => acc + v, 0);
 
     return {
       chartData: [

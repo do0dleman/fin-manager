@@ -1,5 +1,5 @@
 import { TRPCError } from "@trpc/server";
-import { desc, eq } from "drizzle-orm";
+import { and, desc, eq, gte, lt } from "drizzle-orm";
 import { z } from "zod";
 import { transactionCategories } from "~/models/TransactionCategory";
 
@@ -22,6 +22,31 @@ export const transactionsRouter = createTRPCRouter({
         where: eq(transactions.user_id, ctx.auth.userId),
         orderBy: desc(transactions.id),
         limit: input.transactionAmount
+      })
+      return {
+        transactions: transactionsList
+      }
+    }),
+  getPeriodTransactions: authedProcedure
+    .input(z.object({ stratDate: z.string().date(), endDate: z.string().date() }))
+    .query(async ({ ctx, input }) => {
+      const startDate = new Date(input.stratDate)
+      const endDate = new Date(input.endDate)
+      endDate.setHours(endDate.getHours() + 24)
+      if (endDate.getTime() - startDate.getTime() >= 1000 * 60 * 60 * 24 * 366) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Start date cannot be more than a year ago from end date"
+        })
+      }
+
+      const transactionsList = await ctx.db.query.transactions.findMany({
+        where:
+          and(
+            gte(transactions.createdAt, startDate),
+            lt(transactions.createdAt, endDate)
+          ),
+        orderBy: desc(transactions.id),
       })
       return {
         transactions: transactionsList
@@ -77,5 +102,5 @@ export const transactionsRouter = createTRPCRouter({
         .where(eq(moneyAccounts.id, input.account_id))
 
       return { message: `Created new money account with id ${newTransaction[0].id}` }
-    })
+    }),
 });
