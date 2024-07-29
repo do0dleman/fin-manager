@@ -1,5 +1,5 @@
 import { TRPCError } from "@trpc/server";
-import { and, desc, eq, gte, lt } from "drizzle-orm";
+import { and, asc, desc, eq, gte, lt } from "drizzle-orm";
 import { z } from "zod";
 import { transactionCategories } from "~/models/TransactionCategory";
 
@@ -28,7 +28,11 @@ export const transactionsRouter = createTRPCRouter({
       }
     }),
   getPeriodTransactions: authedProcedure
-    .input(z.object({ stratDate: z.string().date(), endDate: z.string().date() }))
+    .input(z.object({
+      stratDate: z.string().date(),
+      endDate: z.string().date(),
+      orderBy: z.enum(["asc", "desc"]).default("desc")
+    }))
     .query(async ({ ctx, input }) => {
       const startDate = new Date(input.stratDate)
       const endDate = new Date(input.endDate)
@@ -46,7 +50,7 @@ export const transactionsRouter = createTRPCRouter({
             gte(transactions.createdAt, startDate),
             lt(transactions.createdAt, endDate)
           ),
-        orderBy: desc(transactions.id),
+        orderBy: input.orderBy === "desc" ? desc(transactions.id) : asc(transactions.id),
       })
       return {
         transactions: transactionsList
