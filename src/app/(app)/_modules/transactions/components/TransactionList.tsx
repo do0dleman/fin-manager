@@ -9,7 +9,7 @@ function TransactionList() {
 
   return (
     <div className="w-full">
-      <div className="mb-4 flex gap-2 border-b p-1 align-bottom">
+      <div className="mb-4 flex justify-between gap-2 border-b p-1">
         <h2 className="h-fit">Latest Transactions</h2>
         <TransactionModal
           OpenButton={
