@@ -62,7 +62,8 @@ export const transactionsRouter = createTRPCRouter({
       name: z.string(),
       amount: z.number(),
       type: z.enum(['income', 'expense']),
-      category: z.enum(transactionCategories)
+      category: z.enum(transactionCategories),
+      createdAt: z.string().date().optional()
     }))
     .mutation(async ({ input, ctx }) => {
       const newTransaction = await ctx.db
@@ -73,7 +74,8 @@ export const transactionsRouter = createTRPCRouter({
           amount: `${input.amount}`,
           user_id: ctx.auth.userId,
           name: input.name,
-          category: input.category
+          category: input.category,
+          createdAt: input.createdAt ? new Date(input.createdAt) : undefined
         }).returning()
 
       if (!newTransaction[0]) {

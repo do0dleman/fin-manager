@@ -3,10 +3,10 @@ import { z } from "zod";
 import { Button } from "~/app/_components/ui/button";
 import { Input } from "~/app/_components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { format } from "date-fns";
 import {
   Form,
   FormControl,
-  // FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -39,7 +39,8 @@ import {
   transactionCategories,
 } from "~/models/TransactionCategory";
 import { cn } from "~/lib/utils";
-import { Check, ChevronsUpDown } from "lucide-react";
+import { CalendarIcon, Check, ChevronsUpDown } from "lucide-react";
+import { Calendar } from "~/app/_components/ui/calendar";
 
 function TransactionForm(props: { onSuccessSubmit?: () => void }) {
   const { onSuccessSubmit } = props;
@@ -63,6 +64,7 @@ function TransactionForm(props: { onSuccessSubmit?: () => void }) {
     type: z.enum(["income", "expense"]),
     category: z.enum(transactionCategories),
     accountId: z.coerce.number(),
+    createdAt: z.date(),
   });
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -71,6 +73,7 @@ function TransactionForm(props: { onSuccessSubmit?: () => void }) {
       name: "",
       amount: 0,
       type: "expense",
+      createdAt: new Date(),
     },
   });
 
@@ -81,6 +84,7 @@ function TransactionForm(props: { onSuccessSubmit?: () => void }) {
       amount: values.amount,
       type: values.type,
       category: values.category,
+      createdAt: values.createdAt.toISOString().split("T")[0],
     });
 
     form.reset();
@@ -118,6 +122,46 @@ function TransactionForm(props: { onSuccessSubmit?: () => void }) {
               <FormControl>
                 <Input className="text-xl" {...field} />
               </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="createdAt"
+          render={({ field }) => (
+            <FormItem className="flex flex-col">
+              <FormLabel>Transaction date</FormLabel>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <FormControl>
+                    <Button
+                      variant={"outline"}
+                      className={cn(
+                        "w-full pl-3 text-left font-normal",
+                        !field.value && "text-muted-foreground",
+                      )}
+                    >
+                      {field.value ? (
+                        format(field.value, "PPP")
+                      ) : (
+                        <span>Pick a date</span>
+                      )}
+                      <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                    </Button>
+                  </FormControl>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0" align="start">
+                  <Calendar
+                    mode="single"
+                    selected={field.value}
+                    onSelect={field.onChange}
+                    disabled={(date) =>
+                      date > new Date() || date < new Date("1900-01-01")
+                    }
+                  />
+                </PopoverContent>
+              </Popover>
               <FormMessage />
             </FormItem>
           )}
