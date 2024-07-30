@@ -69,7 +69,7 @@ export function TransactionChart() {
   }, [data]);
   return (
     <div className="flex h-full w-1/2 flex-col items-center justify-center">
-      <h2 className="mb-4">Last Month</h2>
+      <h2 className="mb-4">Last 30 days</h2>
       <ChartContainer
         config={chartConfig}
         className="h-full w-[200px] 2xl:w-[300px]"
