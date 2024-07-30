@@ -1,5 +1,5 @@
-import React from "react";
-import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
+import React, { useMemo } from "react";
+import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts";
 import {
   type ChartConfig,
   ChartContainer,
@@ -43,38 +43,47 @@ function OverTimeChart(props: { timeRange: "90d" | "30d" | "7d" }) {
     orderBy: "desc",
   });
 
+  const chartData = useMemo(() => {
+    if (data === undefined) return [];
+    const chartDataArr = [];
+    const tranData = [...data.transactions];
+    for (let i = 0; i <= daysToSubtract; i++) {
+      const date = new Date();
+      date.setDate(date.getDate() - daysToSubtract);
+      date.setDate(date.getDate() + i);
+      date.setHours(23);
+      date.setMinutes(59);
+      const dateString = date.toISOString().split("T")[0];
+
+      let incomeSum = 0;
+      let expenseSum = 0;
+      for (let j = tranData.length; j >= 0; j--) {
+        const transaction = tranData[j];
+        if (transaction?.createdAt === undefined) continue; // For Typescript
+        if (transaction.createdAt.getTime() - date.getTime() < 0) {
+          if (transaction.type === "income") incomeSum += +transaction.amount;
+          if (transaction.type === "expense") expenseSum += +transaction.amount;
+          tranData.pop();
+        } else {
+          break;
+        }
+      }
+      chartDataArr.push({
+        date: dateString,
+        income: incomeSum,
+        expense: expenseSum,
+      });
+    }
+    return chartDataArr;
+  }, [data, daysToSubtract]);
+
   if (!isFetched || data === undefined) {
     return <></>;
   }
 
-  const chartData = [];
-  for (let i = 0; i <= daysToSubtract; i++) {
-    const tranData = [...data.transactions];
-    const date = new Date(startDate);
-    date.setDate(startDate.getDate() + i);
-    date.setHours(23);
-    date.setMinutes(59);
-    const dateString = date.toISOString().split("T")[0];
-
-    let incomeSum = 0;
-    let expenseSum = 0;
-    for (let j = tranData.length; j >= 0; j--) {
-      const transaction = tranData[j];
-      if (transaction?.createdAt === undefined) continue; // For Typescript
-      if (transaction.createdAt.getTime() - date.getTime() < 0) {
-        if (transaction.type === "income") incomeSum += +transaction.amount;
-        if (transaction.type === "expense") expenseSum += +transaction.amount;
-        tranData.pop();
-      } else {
-        break;
-      }
-    }
-    chartData.push({
-      date: dateString,
-      income: incomeSum,
-      expense: expenseSum,
-    });
-  }
+  const maxExpense = Math.max(...chartData.map((item) => item.expense));
+  const maxIncome = Math.max(...chartData.map((item) => item.income));
+  // const maxVal = Math.max(maxExpense, maxIncome);
   return (
     <ChartContainer
       config={chartConfig}
@@ -108,6 +117,12 @@ function OverTimeChart(props: { timeRange: "90d" | "30d" | "7d" }) {
           </linearGradient>
         </defs>
         <CartesianGrid vertical={false} />
+        <YAxis
+          domain={[0, Math.round((maxExpense + maxIncome) * 1.1)]}
+          axisLine={false}
+          tick={false}
+          width={0}
+        />
         <XAxis
           dataKey="date"
           tickLine={false}

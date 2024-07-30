@@ -90,6 +90,9 @@ function TransactionForm(props: { onSuccessSubmit?: () => void }) {
     void utils.transactions.getUserLatestTransactions.invalidate(undefined, {
       refetchType: "all",
     });
+    void utils.transactions.getPeriodTransactions.invalidate(undefined, {
+      refetchType: "all",
+    });
     void utils.moneyAccounts.getUsersMoneyAccounts.invalidate(undefined, {
       refetchType: "all",
     });
