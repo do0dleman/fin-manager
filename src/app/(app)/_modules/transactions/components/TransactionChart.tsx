@@ -68,11 +68,11 @@ export function TransactionChart() {
     };
   }, [data]);
   return (
-    <div className="flex w-1/2 flex-col items-center justify-center">
+    <div className="flex h-full w-1/2 flex-col items-center justify-center">
       <h2 className="mb-4">Last Month</h2>
       <ChartContainer
         config={chartConfig}
-        className="min-h-[250px] w-[200px] lg:w-[300px]"
+        className="h-full w-[200px] 2xl:w-[300px]"
       >
         <BarChart accessibilityLayer data={chartData}>
           <CartesianGrid vertical={false} />

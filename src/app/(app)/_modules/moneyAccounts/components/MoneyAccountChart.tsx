@@ -46,8 +46,7 @@ export function MoneyAccountChart() {
   return (
     <ChartContainer
       config={chartConfig}
-      // config={{}}
-      className="mx-auto aspect-auto min-h-[300px] w-full"
+      className="mx-auto aspect-auto h-full min-w-[200px] 2xl:min-w-[300px]"
     >
       <PieChart>
         <ChartTooltip cursor={true} content={<ChartTooltipContent />} />
@@ -59,8 +58,8 @@ export function MoneyAccountChart() {
           }))}
           dataKey="amount"
           nameKey="name"
-          innerRadius={80}
-          outerRadius={120}
+          innerRadius={"70%"}
+          outerRadius={"100%"}
           strokeWidth={5}
         >
           <Label
