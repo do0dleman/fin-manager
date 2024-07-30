@@ -48,7 +48,9 @@ function MoneyAccountList() {
           ))}
         <div className="mt-2 flex w-full justify-between border-t">
           <span>Total:</span>
-          <span className="font-bold">{totalMoney}</span>
+          <span className="font-bold">
+            {Math.round(totalMoney * 100) / 100}
+          </span>
         </div>
       </div>
     </div>
