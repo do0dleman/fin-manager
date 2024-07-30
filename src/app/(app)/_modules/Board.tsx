@@ -5,6 +5,7 @@ import MoneyAccounts from "./moneyAccounts/MoneyAccounts";
 import Transactions from "./transactions/Transactions";
 import { TransactionsOverTime } from "./transactionsOverTime/TransactionsOverTime";
 import { ScrollArea } from "~/app/_components/ui/scroll-area";
+import { TransactionsByCategories } from "./transactionsByCategories/TransactionsByCategories";
 
 function Board() {
   return (
@@ -14,7 +15,7 @@ function Board() {
           <MoneyAccounts />
           <Transactions />
           <TransactionsOverTime />
-          <Transactions />
+          <TransactionsByCategories />
         </div>
       </ScrollArea>
     </ResizablePanel>
