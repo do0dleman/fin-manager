@@ -63,9 +63,9 @@ function OverTimeChart(props: { timeRange: "90d" | "30d" | "7d" }) {
         if (transaction.createdAt.getTime() - date.getTime() < 0) {
           if (transaction.type === "income") incomeSum += +transaction.amount;
           if (transaction.type === "expense") expenseSum += +transaction.amount;
-          tranData.pop();
-        } else {
-          break;
+          if (tranData[j]?.createdAt) {
+            tranData[j]!.createdAt = undefined as unknown as Date;
+          }
         }
       }
       chartDataArr.push({
