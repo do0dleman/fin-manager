@@ -20,7 +20,7 @@ export function ByCategoryChart(props: {
   return (
     <ChartContainer
       config={chartConfig}
-      className="aspect-auto h-[250px] w-full"
+      className="aspect-auto h-[300px] w-full"
     >
       <BarChart
         accessibilityLayer

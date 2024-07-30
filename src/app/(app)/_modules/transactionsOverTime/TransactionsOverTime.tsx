@@ -32,7 +32,7 @@ export function TransactionsOverTime() {
         <div className="grid flex-1 gap-1 text-center sm:text-left">
           <CardTitle>Transactions Over Time</CardTitle>
           <CardDescription>
-            Showing total visitors for the {showingForTimeString}
+            Showing total income/expense for the {showingForTimeString}
           </CardDescription>
         </div>
         <Select value={timeRange} onValueChange={setTimeRange}>
