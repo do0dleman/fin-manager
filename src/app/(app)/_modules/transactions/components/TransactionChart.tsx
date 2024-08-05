@@ -71,7 +71,7 @@ export function TransactionChart() {
 
   let containerChild = (
     <div className="flex items-center justify-center gap-2 pt-8 text-lg">
-      Nothing Here yet
+      Nothing here yet
       <CircleSlash2 className="h-6 w-6" />
     </div>
   );
