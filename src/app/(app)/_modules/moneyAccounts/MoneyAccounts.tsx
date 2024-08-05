@@ -9,9 +9,10 @@ import {
 import { MoneyAccountChart } from "./components/MoneyAccountChart";
 import MoneyAccountList from "./components/MoneyAccountList";
 
-function MoneyAccounts() {
+function MoneyAccounts(props: React.ComponentProps<typeof Card>) {
+  const { className } = props;
   return (
-    <Card className="flex h-fit flex-col">
+    <Card className={`flex h-fit flex-col ${className}`} {...props}>
       <CardHeader className="items-center pb-4">
         <CardTitle>Your Money Accounts</CardTitle>
         <CardDescription>Current Data</CardDescription>

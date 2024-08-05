@@ -30,7 +30,9 @@ const chartConfig = {
 
 type Dictionary<T = unknown> = Record<string, T>;
 
-export function TransactionsByCategories() {
+export function TransactionsByCategories(
+  props: React.ComponentProps<typeof Card>,
+) {
   const [activeChart, setActiveChart] =
     useState<keyof typeof chartConfig>("expense");
 
@@ -82,7 +84,7 @@ export function TransactionsByCategories() {
   }, [data]);
 
   return (
-    <Card>
+    <Card {...props}>
       <CardHeader className="flex flex-col items-stretch space-y-0 border-b p-0 sm:flex-row">
         <div className="flex flex-1 flex-col justify-center gap-1 px-6 py-5 sm:py-6">
           <CardTitle>Transactions By Categories</CardTitle>

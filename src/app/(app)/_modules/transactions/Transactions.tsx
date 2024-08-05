@@ -9,14 +9,15 @@ import {
 import TransactionList from "./components/TransactionList";
 import { TransactionChart } from "./components/TransactionChart";
 
-function Transactions() {
+function Transactions(props: React.ComponentProps<typeof Card>) {
+  const { className } = props;
   return (
-    <Card className="flex h-fit flex-col">
+    <Card className={`flex h-fit flex-col ${className}`} {...props}>
       <CardHeader className="items-center pb-4">
         <CardTitle>Your Transactions</CardTitle>
         <CardDescription>Current Data</CardDescription>
       </CardHeader>
-      <CardContent className="flex flex-grow gap-4 pb-4">
+      <CardContent className="mb-4 flex h-[80%] flex-grow gap-4">
         <TransactionList />
         <TransactionChart />
       </CardContent>

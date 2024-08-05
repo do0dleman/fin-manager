@@ -16,7 +16,7 @@ import {
 } from "~/app/_components/ui/select";
 import OverTimeChart from "./components/OverTimeChart";
 
-export function TransactionsOverTime() {
+export function TransactionsOverTime(props: React.ComponentProps<typeof Card>) {
   const [timeRange, setTimeRange] = React.useState("7d");
   let showingForTimeString = "last 3 month";
   if (timeRange === "7d") {
@@ -27,7 +27,7 @@ export function TransactionsOverTime() {
   }
 
   return (
-    <Card>
+    <Card {...props}>
       <CardHeader className="flex items-center gap-2 space-y-0 border-b py-5 sm:flex-row">
         <div className="grid flex-1 gap-1 text-center sm:text-left">
           <CardTitle>Transactions Over Time</CardTitle>
