@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useMemo } from "react";
+import { CircleSlash2 } from "lucide-react";
 import {
   Bar,
   BarChart,
@@ -67,59 +68,73 @@ export function TransactionChart() {
       maxSum: Math.max(expenseSum ?? 0, incomeSum ?? 0),
     };
   }, [data]);
+
+  let containerChild = (
+    <div className="flex items-center justify-center gap-2 pt-8 text-lg">
+      Nothing Here yet
+      <CircleSlash2 className="h-6 w-6" />
+    </div>
+  );
+
+  if (data?.transactions.length !== 0) {
+    containerChild = (
+      <BarChart accessibilityLayer data={chartData}>
+        <CartesianGrid vertical={false} />
+        <YAxis
+          dataKey="amount"
+          domain={[0, Math.round(maxSum * 1.1)]}
+          axisLine={false}
+          tick={false}
+          width={0}
+        />
+        <XAxis
+          dataKey="type"
+          tickLine={false}
+          tickMargin={10}
+          axisLine={false}
+          tickFormatter={(value) =>
+            chartConfig[value as keyof typeof chartConfig]?.label
+          }
+        />
+        <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
+        <Bar
+          dataKey="amount"
+          strokeWidth={2}
+          radius={8}
+          barSize={100}
+          // activeIndex={1}
+          activeBar={({ ...props }) => {
+            return (
+              <Rectangle
+                {...props}
+                fillOpacity={0.8}
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+                stroke={props.payload.fill as string}
+                strokeDasharray={4}
+                strokeDashoffset={4}
+              />
+            );
+          }}
+        >
+          <LabelList
+            position="top"
+            dataKey="amount"
+            fontSizeAdjust={0.7}
+            fillOpacity={1}
+          />
+        </Bar>
+      </BarChart>
+    );
+  }
+
   return (
     <div className="flex h-full w-1/2 flex-col items-center justify-center">
-      <h2 className="mb-4">Last 30 days</h2>
+      <h2 className="mb-4">This Month</h2>
       <ChartContainer
         config={chartConfig}
         className="h-full w-[200px] 2xl:w-[300px]"
       >
-        <BarChart accessibilityLayer data={chartData}>
-          <CartesianGrid vertical={false} />
-          <YAxis
-            dataKey="amount"
-            domain={[0, Math.round(maxSum * 1.1)]}
-            axisLine={false}
-            tick={false}
-            width={0}
-          />
-          <XAxis
-            dataKey="type"
-            tickLine={false}
-            tickMargin={10}
-            axisLine={false}
-            tickFormatter={(value) =>
-              chartConfig[value as keyof typeof chartConfig]?.label
-            }
-          />
-          <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
-          <Bar
-            dataKey="amount"
-            strokeWidth={2}
-            radius={8}
-            barSize={100}
-            // activeIndex={1}
-            activeBar={({ ...props }) => {
-              return (
-                <Rectangle
-                  {...props}
-                  fillOpacity={0.8}
-                  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-                  stroke={props.payload.fill as string}
-                  strokeDasharray={4}
-                  strokeDashoffset={4}
-                />
-              );
-            }}
-          >
-            <LabelList
-              position="top"
-              dataKey="amount"
-              fontSizeAdjust={0.7}
-              fillOpacity={1}
-            />
-          </Bar>
-        </BarChart>
+        {containerChild}
       </ChartContainer>
     </div>
   );
