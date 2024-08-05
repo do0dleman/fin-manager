@@ -41,7 +41,7 @@ export function TransactionChart() {
     endDate: `${year}-${month}-${day}`,
   });
 
-  const { chartData, maxSum } = useMemo(() => {
+  const { chartData, maxSum, isZeros } = useMemo(() => {
     const incomeSum = data?.transactions
       .filter((tran) => tran.type === "income")
       .map((tran) => +tran.amount)
@@ -65,76 +65,72 @@ export function TransactionChart() {
           fill: "hsl(var(--destructive))",
         },
       ],
-      maxSum: Math.max(expenseSum ?? 0, incomeSum ?? 0),
+      maxSum: Math.max(expenseSum ?? 0, incomeSum ?? 0, 1),
+      isZeros: expenseSum === 0 && incomeSum === 0,
     };
   }, [data]);
 
-  let containerChild = (
-    <div className="flex items-center justify-center gap-2 pt-8 text-lg">
-      Nothing here yet
-      <CircleSlash2 className="h-6 w-6" />
-    </div>
-  );
-
-  if (data?.transactions.length !== 0) {
-    containerChild = (
-      <BarChart accessibilityLayer data={chartData}>
-        <CartesianGrid vertical={false} />
-        <YAxis
-          dataKey="amount"
-          domain={[0, Math.round(maxSum * 1.1)]}
-          axisLine={false}
-          tick={false}
-          width={0}
-        />
-        <XAxis
-          dataKey="type"
-          tickLine={false}
-          tickMargin={10}
-          axisLine={false}
-          tickFormatter={(value) =>
-            chartConfig[value as keyof typeof chartConfig]?.label
-          }
-        />
-        <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
-        <Bar
-          dataKey="amount"
-          strokeWidth={2}
-          radius={8}
-          barSize={100}
-          // activeIndex={1}
-          activeBar={({ ...props }) => {
-            return (
-              <Rectangle
-                {...props}
-                fillOpacity={0.8}
-                // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-                stroke={props.payload.fill as string}
-                strokeDasharray={4}
-                strokeDashoffset={4}
-              />
-            );
-          }}
-        >
-          <LabelList
-            position="top"
-            dataKey="amount"
-            fontSizeAdjust={0.7}
-            fillOpacity={1}
-          />
-        </Bar>
-      </BarChart>
-    );
-  }
-
   return (
-    <div className="flex h-full w-1/2 flex-col items-center justify-center">
+    <div className="relative flex h-full w-1/2 flex-col items-center justify-center">
       <h2 className="mb-4">This Month</h2>
+      {isZeros ? (
+        <div className="absolute inset-0 flex items-center justify-center gap-2 text-lg">
+          No transactions yet
+          <CircleSlash2 className="h-6 w-6" />
+        </div>
+      ) : (
+        <></>
+      )}
       <ChartContainer
         config={chartConfig}
         className="h-full w-[200px] 2xl:w-[300px]"
       >
-        {containerChild}
+        <BarChart accessibilityLayer data={chartData}>
+          <CartesianGrid vertical={false} />
+          <YAxis
+            dataKey="amount"
+            domain={[0, Math.round(maxSum * 1.1)]}
+            axisLine={false}
+            tick={false}
+            width={0}
+          />
+          <XAxis
+            dataKey="type"
+            tickLine={false}
+            tickMargin={10}
+            axisLine={false}
+            tickFormatter={(value) =>
+              chartConfig[value as keyof typeof chartConfig]?.label
+            }
+          />
+          <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
+          <Bar
+            dataKey="amount"
+            strokeWidth={2}
+            radius={8}
+            barSize={100}
+            // activeIndex={1}
+            activeBar={({ ...props }) => {
+              return (
+                <Rectangle
+                  {...props}
+                  fillOpacity={0.8}
+                  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+                  stroke={props.payload.fill as string}
+                  strokeDasharray={4}
+                  strokeDashoffset={4}
+                />
+              );
+            }}
+          >
+            <LabelList
+              position="top"
+              dataKey="amount"
+              fontSizeAdjust={0.7}
+              fillOpacity={1}
+            />
+          </Bar>
+        </BarChart>
       </ChartContainer>
     </div>
   );
