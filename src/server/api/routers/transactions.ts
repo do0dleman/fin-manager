@@ -52,6 +52,7 @@ export const transactionsRouter = createTRPCRouter({
           ),
         orderBy: input.orderBy === "desc" ? desc(transactions.id) : asc(transactions.id),
       })
+      console.log(transactionsList)
       return {
         transactions: transactionsList
       }

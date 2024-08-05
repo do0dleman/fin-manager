@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts";
+import { CartesianGrid, Line, LineChart, XAxis, YAxis } from "recharts";
 import {
   type ChartConfig,
   ChartContainer,
@@ -8,6 +8,7 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "~/app/_components/ui/chart";
+import { type transactions } from "~/server/db/schema";
 import { api } from "~/trpc/react";
 
 const chartConfig = {
@@ -46,7 +47,9 @@ function OverTimeChart(props: { timeRange: "90d" | "30d" | "7d" }) {
   const chartData = useMemo(() => {
     if (data === undefined) return [];
     const chartDataArr = [];
-    const tranData = [...data.transactions];
+    const tranData: (typeof transactions.$inferSelect | null)[] = [
+      ...data.transactions,
+    ];
     for (let i = 0; i <= daysToSubtract; i++) {
       const date = new Date();
       date.setDate(date.getDate() - daysToSubtract);
@@ -59,12 +62,12 @@ function OverTimeChart(props: { timeRange: "90d" | "30d" | "7d" }) {
       let expenseSum = 0;
       for (let j = tranData.length; j >= 0; j--) {
         const transaction = tranData[j];
-        if (transaction?.createdAt === undefined) continue; // For Typescript
+        if (transaction === undefined || transaction === null) continue; // For Typescript
         if (transaction.createdAt.getTime() - date.getTime() < 0) {
           if (transaction.type === "income") incomeSum += +transaction.amount;
           if (transaction.type === "expense") expenseSum += +transaction.amount;
           if (tranData[j]?.createdAt) {
-            tranData[j]!.createdAt = undefined as unknown as Date;
+            tranData[j] = null;
           }
         }
       }
@@ -81,41 +84,21 @@ function OverTimeChart(props: { timeRange: "90d" | "30d" | "7d" }) {
     return <></>;
   }
 
-  const maxExpense = Math.max(...chartData.map((item) => item.expense));
-  const maxIncome = Math.max(...chartData.map((item) => item.income));
-  // const maxVal = Math.max(maxExpense, maxIncome);
+  const maxExpense = Math.max(...chartData.map((item) => item.expense), 1);
+  const maxIncome = Math.max(...chartData.map((item) => item.income), 1);
   return (
     <ChartContainer
       config={chartConfig}
       className="aspect-auto h-[300px] w-full"
     >
-      <AreaChart data={chartData}>
-        <defs>
-          <linearGradient id="fillIncome" x1="0" y1="0" x2="0" y2="1">
-            <stop
-              offset="5%"
-              stopColor="var(--color-income)"
-              stopOpacity={0.8}
-            />
-            <stop
-              offset="95%"
-              stopColor="var(--color-income)"
-              stopOpacity={0.1}
-            />
-          </linearGradient>
-          <linearGradient id="fillExpense" x1="0" y1="0" x2="0" y2="1">
-            <stop
-              offset="5%"
-              stopColor="var(--color-expense)"
-              stopOpacity={0.8}
-            />
-            <stop
-              offset="95%"
-              stopColor="var(--color-expense)"
-              stopOpacity={0.1}
-            />
-          </linearGradient>
-        </defs>
+      <LineChart
+        accessibilityLayer
+        data={chartData}
+        margin={{
+          left: 12,
+          right: 12,
+        }}
+      >
         <CartesianGrid vertical={false} />
         <YAxis
           domain={[0, Math.round((maxExpense + maxIncome) * 1.1)]}
@@ -151,22 +134,23 @@ function OverTimeChart(props: { timeRange: "90d" | "30d" | "7d" }) {
             />
           }
         />
-        <Area
-          dataKey="expense"
-          type="natural"
-          fill="url(#fillExpense)"
-          stroke="hsl(var(--destructive))"
-          stackId="a"
-        />
-        <Area
+        <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
+        <Line
           dataKey="income"
-          type="natural"
-          fill="url(#fillIncome)"
-          stroke="hsl(var(--positive))"
-          stackId="a"
+          type="monotone"
+          stroke="var(--color-income)"
+          strokeWidth={2}
+          dot={false}
         />
-        <ChartLegend content={<ChartLegendContent />} />
-      </AreaChart>
+        <Line
+          dataKey="expense"
+          type="monotone"
+          stroke="var(--color-expense)"
+          strokeWidth={2}
+          dot={false}
+        />
+        <ChartLegend content={<ChartLegendContent />} />;
+      </LineChart>
     </ChartContainer>
   );
 }
