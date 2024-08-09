@@ -56,7 +56,9 @@ export const users = createTable(
       .notNull(),
     status: statusEnum("status").default("inactive").notNull(),
     active_until: timestamp("active_until", { withTimezone: true }),
-    is_trial: boolean("is_trial").default(false)
+    is_trial: boolean("is_trial").default(false),
+    username: text("username"),
+    profile_img: text("profile_img")
   }
 );
 

@@ -37,7 +37,7 @@ async function handler(req: Request) {
   }
 
   const newUserId = await db.insert(users)
-    .values({ id: userId })
+    .values({ id: userId, username: msg.data.username, profile_img: msg.data.image_url })
     .returning({ id: users.id })
 
   if (!newUserId) {
