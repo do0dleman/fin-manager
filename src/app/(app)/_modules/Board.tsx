@@ -13,16 +13,16 @@ import { TransactionsByCategories } from "./transactionsByCategories/Transaction
 
 function Board() {
   return (
-    <ResizablePanel className="h-full">
-      <ScrollArea className="h-full">
-        <div className="flex h-full flex-col items-center justify-center gap-4 p-4 text-2xl [&>*]:h-full">
+    <ResizablePanel className="h-[100dvh]">
+      <ScrollArea className="h-[100dvh]">
+        <div className="grid h-[100dvh] grid-rows-2 gap-4 p-4 text-2xl [&>*]:h-full">
           <ResizablePanelGroup direction="horizontal" className="gap-3">
             <ResizablePanel minSize={30} maxSize={70} defaultSize={40}>
               <MoneyAccounts className="h-full" />
             </ResizablePanel>
             <ResizableHandle withHandle />
             <ResizablePanel>
-              <TransactionsOverTime />
+              <TransactionsOverTime className="h-full" />
             </ResizablePanel>
           </ResizablePanelGroup>
           <ResizablePanelGroup
@@ -30,7 +30,7 @@ function Board() {
             className="items-stretch gap-3"
           >
             <ResizablePanel>
-              <TransactionsByCategories />
+              <TransactionsByCategories className="h-full" />
             </ResizablePanel>
             <ResizableHandle withHandle />
             <ResizablePanel minSize={30} maxSize={70} defaultSize={40}>
