@@ -9,6 +9,7 @@ import Board from "../_modules/Board";
 import { useUser } from "@clerk/nextjs";
 import { api } from "~/trpc/react";
 import { redirect } from "next/navigation";
+import AppSkeleton from "../_modules/appSkeleton/AppSkeleton";
 
 function App() {
   const userAuthData = useUser();
@@ -23,7 +24,7 @@ function App() {
   );
 
   if (isLoading || !isFetched) {
-    return <div>Loading...</div>;
+    return <AppSkeleton />;
   }
 
   if (userData?.user.status === "inactive") {
@@ -33,7 +34,7 @@ function App() {
   return (
     <ResizablePanelGroup direction="horizontal" className="!h-[100dvh]">
       <Toolbar />
-      <ResizableHandle className="bg-white" />
+      <ResizableHandle className="" />
       <Board />
     </ResizablePanelGroup>
   );
