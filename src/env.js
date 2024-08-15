@@ -10,6 +10,8 @@ export const env = createEnv({
     DATABASE_URL: z.string().url(),
     CLERK_SECRET_KEY: z.string(),
     CLERK_SIGNING_SECRET: z.string(),
+    LEMONSQUEEZY_API_KEY: z.string(),
+    LEMONSQUEEZY_STORE_ID:z.string(),
     NODE_ENV: z
       .enum(["development", "test", "production"])
       .default("development"),
@@ -35,6 +37,8 @@ export const env = createEnv({
     CLERK_SECRET_KEY: process.env.CLERK_SECRET_KEY,
     NODE_ENV: process.env.NODE_ENV,
     CLERK_SIGNING_SECRET: process.env.CLERK_SIGNING_SECRET,
+    LEMONSQUEEZY_API_KEY: process.env.LEMONSQUEEZY_API_KEY,
+    LEMONSQUEEZY_STORE_ID: process.env.LEMONSQUEEZY_STORE_ID,
     // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
   },
   /**
