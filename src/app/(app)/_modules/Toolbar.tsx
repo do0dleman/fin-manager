@@ -1,11 +1,20 @@
 "use client";
 
-import { House, LayoutDashboard, User } from "lucide-react";
+import { useUser } from "@clerk/nextjs";
+import { House, LayoutDashboard, LockKeyhole, User } from "lucide-react";
 import Link from "next/link";
 import { Button } from "~/app/_components/ui/button";
 import { ResizablePanel } from "~/app/_components/ui/resizable";
+import { api } from "~/trpc/react";
 
 function Toolbar() {
+  const userAuthData = useUser();
+
+  const { data: userData, isFetched } = api.users.getUserInfo.useQuery(
+    { user_id: userAuthData.user?.id ?? "" },
+    { enabled: userAuthData.user !== undefined },
+  );
+
   return (
     <ResizablePanel
       defaultSize={10}
@@ -43,6 +52,20 @@ function Toolbar() {
           <span>Account</span>
         </Link>
       </Button>
+      {isFetched && userData?.user.role === "admin" ? (
+        <Button
+          variant="ghost"
+          className="flex w-full justify-start gap-2 text-2xl"
+          asChild
+        >
+          <Link href="/admin">
+            <LockKeyhole />
+            <span>Admin</span>
+          </Link>
+        </Button>
+      ) : (
+        <></>
+      )}
     </ResizablePanel>
   );
 }
