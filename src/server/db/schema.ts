@@ -43,6 +43,7 @@ export const posts = createTable(
 );
 
 export const statusEnum = pgEnum('status', ['active', 'inactive', 'canceled']);
+export const roleEnum = pgEnum('role', ['user', 'admin']);
 export const transactionTypeEnum = pgEnum('type', ['income', 'expense']);
 export const accountColorEnum = pgEnum('color', accountColors);
 export const transactionCategoryEnum = pgEnum('category', transactionCategories);
@@ -58,7 +59,8 @@ export const users = createTable(
     active_until: timestamp("active_until", { withTimezone: true }),
     is_trial: boolean("is_trial").default(false),
     username: text("username"),
-    profile_img: text("profile_img")
+    profile_img: text("profile_img"),
+    role: roleEnum("role").default("user").notNull()
   }
 );
 
@@ -87,3 +89,20 @@ export const transactions = createTable(
     type: transactionTypeEnum("type").notNull()
   }
 );
+
+export const plans = createTable('plan', {
+  id: serial('id').primaryKey(),
+  productId: integer('productId').notNull(),
+  productName: text('productName'),
+  variantId: integer('variantId').notNull().unique(),
+  name: text('name').notNull(),
+  description: text('description'),
+  price: text('price').notNull(),
+  isUsageBased: boolean('isUsageBased').default(false),
+  interval: text('interval'),
+  intervalCount: integer('intervalCount'),
+  trialInterval: text('trialInterval'),
+  trialIntervalCount: integer('trialIntervalCount'),
+  sort: integer('sort'),
+})
+export type NewPlan = typeof plans.$inferInsert;
