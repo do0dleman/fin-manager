@@ -7,6 +7,15 @@ import { redirect } from "next/navigation";
 import React, { useEffect } from "react";
 import { Button } from "~/app/_components/ui/button";
 import { api } from "~/trpc/react";
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "~/app/_components/ui/table";
 
 function Account() {
   const { user } = useUser();
@@ -53,15 +62,42 @@ function Account() {
         <div className="mt-10 flex flex-col justify-center gap-4">
           <h1 className="text-center text-3xl">Admin Dashboard</h1>
           <div>
-            <h2 className="text-2xl text-muted-foreground">Plans</h2>
-            <Button className="text-xl" onClick={HandleSyncButtonClick}>
-              Sync Plans
-            </Button>
-            <ul>
-              {plansData?.plans.map((plan) => (
-                <li key={`plan-${plan.id}`}>{plan.productName}</li>
-              ))}
-            </ul>
+            <h2 className="mb-2 ml-4 text-2xl text-muted-foreground">Plans</h2>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Product Name</TableHead>
+                  <TableHead>Variant</TableHead>
+                  <TableHead>Interval</TableHead>
+                  <TableHead>Trial Period</TableHead>
+                  <TableHead>Price</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {plansData?.plans.map((plan) => (
+                  <TableRow key={`plan-${plan.id}`}>
+                    <TableCell>{plan.productName}</TableCell>
+                    <TableCell>{plan.name}</TableCell>
+                    <TableCell>{plan.interval}</TableCell>
+                    <TableCell>
+                      {plan.trialInterval
+                        ? `${plan.trialIntervalCount} ${plan.trialInterval}`
+                        : "none"}
+                    </TableCell>
+                    <TableCell>{`${+plan.price / 100}€`}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+            <div className="flex items-center gap-2 px-8">
+              <Button className="mt-2 text-xl" onClick={HandleSyncButtonClick}>
+                Sync Plans
+              </Button>
+              <p className="text-muted-foreground">
+                Performs a request to LemonSqueezy and sync internal plan db
+                with theirs
+              </p>
+            </div>
           </div>
         </div>
       </div>
