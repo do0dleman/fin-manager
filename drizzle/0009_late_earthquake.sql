@@ -1,0 +1,1 @@
+ALTER TABLE "fin-manager_plan" ADD COLUMN "sort" integer;

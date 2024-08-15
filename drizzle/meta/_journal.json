@@ -43,6 +43,34 @@
       "when": 1723201286687,
       "tag": "0005_short_marvex",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "6",
+      "when": 1723698717175,
+      "tag": "0006_vengeful_talos",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "6",
+      "when": 1723699008968,
+      "tag": "0007_parched_kate_bishop",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "6",
+      "when": 1723703167527,
+      "tag": "0008_clumsy_slipstream",
+      "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "6",
+      "when": 1723703639694,
+      "tag": "0009_late_earthquake",
+      "breakpoints": true
     }
   ]
 }
