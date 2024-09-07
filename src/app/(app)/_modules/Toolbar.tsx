@@ -1,11 +1,18 @@
 "use client";
 
 import { useUser } from "@clerk/nextjs";
-import { House, LayoutDashboard, LockKeyhole, User } from "lucide-react";
+import {
+  House,
+  LayoutDashboard,
+  LockKeyhole,
+  LogOut,
+  User,
+} from "lucide-react";
 import Link from "next/link";
 import { Button } from "~/app/_components/ui/button";
 import { ResizablePanel } from "~/app/_components/ui/resizable";
 import { api } from "~/trpc/react";
+import { useClerk } from "@clerk/nextjs";
 
 function Toolbar() {
   const userAuthData = useUser();
@@ -14,6 +21,8 @@ function Toolbar() {
     { user_id: userAuthData.user?.id ?? "" },
     { enabled: userAuthData.user !== undefined },
   );
+
+  const { signOut } = useClerk();
 
   return (
     <ResizablePanel
@@ -66,6 +75,14 @@ function Toolbar() {
       ) : (
         <></>
       )}
+      <Button
+        variant="ghost"
+        className="flex w-full justify-start gap-2 text-2xl"
+        onClick={() => signOut({ redirectUrl: "/" })}
+      >
+        <LogOut />
+        <span>Sign Out</span>
+      </Button>
     </ResizablePanel>
   );
 }
