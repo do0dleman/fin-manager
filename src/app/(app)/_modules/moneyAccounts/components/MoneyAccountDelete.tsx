@@ -17,7 +17,10 @@ function MoneyAccountDelete(props: { accountId: number }) {
   const { accountId } = props;
   const utils = api.useUtils();
   const deleteMutation = api.moneyAccounts.deleteMoneyAccount.useMutation({
-    onSuccess: () => utils.moneyAccounts.invalidate(),
+    onSuccess: () => {
+      void utils.moneyAccounts.invalidate();
+      void utils.transactions.invalidate();
+    },
   });
 
   async function HandleDialogAction() {
@@ -35,7 +38,7 @@ function MoneyAccountDelete(props: { accountId: number }) {
           <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
           <AlertDialogDescription>
             This action cannot be undone. This will permanently delete your
-            money account and associated with it transactions from our servers.
+            money account and transactions associated with it from our servers.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
