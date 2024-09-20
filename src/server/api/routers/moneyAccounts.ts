@@ -4,7 +4,7 @@ import { z } from "zod";
 import { accountColors } from "~/models/AccountColor";
 
 import { authedProcedure, createTRPCRouter } from "~/server/api/trpc";
-import { moneyAccounts } from "~/server/db/schema";
+import { moneyAccounts, transactions } from "~/server/db/schema";
 
 export const moneyAccountsRouter = createTRPCRouter({
   getUsersMoneyAccounts: authedProcedure
@@ -39,6 +39,9 @@ export const moneyAccountsRouter = createTRPCRouter({
   deleteMoneyAccount: authedProcedure
     .input(z.object({ accountId: z.number() }))
     .mutation(async ({ ctx, input }) => {
+      await ctx.db.delete(transactions)
+        .where(eq(transactions.account_id, input.accountId))
+
       const deletedIds = await ctx.db.delete(moneyAccounts)
         .where(and(
           eq(moneyAccounts.user_id, ctx.auth.userId),
