@@ -41,7 +41,7 @@ function AuthHeader() {
   return (
     <div>
       <Button asChild>
-        <Link href="/app">Sign In</Link>
+        <Link href="/sign-in">Sign In</Link>
       </Button>
     </div>
   );
