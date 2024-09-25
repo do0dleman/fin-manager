@@ -6,6 +6,9 @@ import crypto from 'crypto';
 import { env } from '~/env';
 import { type OnSubscriptionEvent } from './model';
 import { TRPCError } from '@trpc/server';
+import { db } from '~/server/db';
+import { users } from '~/server/db/schema';
+import { eq } from 'drizzle-orm';
 
 export async function POST(req: NextRequest) {
 
@@ -14,18 +17,26 @@ export async function POST(req: NextRequest) {
   const digest = Buffer.from(hmac.update(body).digest('hex'), 'utf8');
   const signature = Buffer.from(headers().get('X-Signature') ?? '', 'utf8');
 
+  if (digest.byteLength !== signature.byteLength) {
+    throw new TRPCError({ code: "BAD_REQUEST", message: 'Invalid signature' });
+  }
   if (!crypto.timingSafeEqual(digest, signature)) {
     throw new TRPCError({ code: "BAD_REQUEST", message: 'Invalid signature' });
   }
 
-
   const payload = JSON.parse(body) as OnSubscriptionEvent;
-  console.log(payload)
 
-  // try {
-  //   await WebhookEventHandler(payload);
-  //   return NextResponse.json({ received: true }, { status: 200 });
-  // } catch (err) {
-  //   return NextResponse.json({ error: err.message }, { status: 500 });
-  // }
+  const userId = payload.meta.custom_data.user_id;
+  if (!userId) {
+    throw new TRPCError({ code: "BAD_REQUEST", message: 'No user ID provided' });
+  }
+
+  const isTrial = new Date(payload.data.attributes.trial_ends_at).getTime() - new Date().getTime() > 0
+
+  await db.update(users)
+    .set({ status: "active", is_trial: isTrial, })
+    .where(eq(users.id, userId))
+
+
+  return NextResponse.json({ message: `Succesfully registered subscription`, })
 }

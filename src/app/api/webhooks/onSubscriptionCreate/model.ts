@@ -5,8 +5,12 @@ export interface OnSubscriptionEvent {
 
 export interface Meta {
   event_name: string
+  custom_data: CustomData
 }
 
+export interface CustomData {
+  user_id: string
+}
 export interface Data {
   type: string
   id: string
