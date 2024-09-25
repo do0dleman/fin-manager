@@ -37,7 +37,9 @@ export default function SubscriptionCards() {
         </CardContent>
         <CardFooter>
           <Button className="w-full" variant="outline" asChild>
-            <a href="/checkout?plan=monthly">Subscribe Now</a>
+            <a href="https://finman.lemonsqueezy.com/buy/c648e06f-9f46-4467-9dde-1b08ab82d570">
+              Subscribe Now
+            </a>
           </Button>
         </CardFooter>
       </Card>
@@ -70,7 +72,9 @@ export default function SubscriptionCards() {
         </CardContent>
         <CardFooter>
           <Button className="w-full" asChild>
-            <a href="/checkout?plan=annual">Subscribe Now</a>
+            <a href="https://finman.lemonsqueezy.com/buy/4f62d395-1525-4e71-baf7-f8f048bf7f6a">
+              Subscribe Now
+            </a>
           </Button>
         </CardFooter>
       </Card>
