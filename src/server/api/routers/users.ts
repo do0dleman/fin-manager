@@ -1,8 +1,10 @@
+import { cancelSubscription, listSubscriptions } from "@lemonsqueezy/lemonsqueezy.js";
 import { TRPCError } from "@trpc/server";
 import { eq } from "drizzle-orm";
 import { z } from "zod";
 
-import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
+import { authedProcedure, createTRPCRouter, publicProcedure } from "~/server/api/trpc";
+import { configureLemonSqueezy } from "~/server/config/lemonsqueezy";
 import { users } from "~/server/db/schema";
 
 export const usersRouter = createTRPCRouter({
@@ -22,4 +24,13 @@ export const usersRouter = createTRPCRouter({
         user: user
       };
     }),
+  cancelSubscription: authedProcedure
+    .input(z.object({ user_id: z.string() }))
+    .mutation(async ({input, ctx}) => {
+      configureLemonSqueezy()
+  
+  
+      // cancelSubscription()
+      return
+    })
 });
