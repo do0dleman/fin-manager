@@ -11,10 +11,10 @@ import WebsiteLogo from "~/app/_components/ui/website-logo";
 function Toolbar() {
   return (
     <ResizablePanel
-      defaultSize={10}
+      defaultSize={12}
       minSize={5}
       maxSize={12}
-      className="flex flex-col p-2 pb-4 pt-8"
+      className="flex flex-col border-r p-2 pb-4 pt-8"
     >
       <div>
         <WebsiteLogo className="px-4" />

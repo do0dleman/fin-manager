@@ -1,7 +1,6 @@
 "use-client";
 
 import {
-  ResizableHandle,
   ResizablePanel,
   ResizablePanelGroup,
 } from "~/app/_components/ui/resizable";
@@ -10,17 +9,18 @@ import Transactions from "./transactions/Transactions";
 import { TransactionsOverTime } from "./transactionsOverTime/TransactionsOverTime";
 import { ScrollArea } from "~/app/_components/ui/scroll-area";
 import { TransactionsByCategories } from "./transactionsByCategories/TransactionsByCategories";
+import Handle from "./Handle";
 
 function Board() {
   return (
     <ResizablePanel className="h-[100dvh]">
       <ScrollArea className="h-[100dvh]">
-        <div className="grid grid-rows-2 gap-4 p-4 text-2xl [&>*]:h-full [@media(min-height:958px)]:h-[100dvh]">
+        <div className="grid grid-rows-2 gap-4 py-4 pr-4 text-2xl [&>*]:h-full [@media(min-height:958px)]:h-[100dvh]">
           <ResizablePanelGroup direction="horizontal" className="">
-            <ResizablePanel minSize={30} maxSize={70} defaultSize={40}>
+            <ResizablePanel minSize={30} maxSize={70} defaultSize={55}>
               <MoneyAccounts className="h-full" />
             </ResizablePanel>
-            <ResizableHandle className="mx-1 w-1 rounded-lg border-none bg-transparent transition-colors duration-300 hover:bg-muted-foreground" />
+            <Handle />
             <ResizablePanel>
               <TransactionsOverTime className="h-full" />
             </ResizablePanel>
@@ -29,8 +29,8 @@ function Board() {
             <ResizablePanel>
               <TransactionsByCategories className="h-full" />
             </ResizablePanel>
-            <ResizableHandle className="mx-1 w-1 rounded-lg border-none bg-transparent transition-colors duration-300 hover:bg-muted-foreground active:bg-muted-foreground" />
-            <ResizablePanel minSize={30} maxSize={70} defaultSize={40}>
+            <Handle />
+            <ResizablePanel minSize={30} maxSize={70} defaultSize={50}>
               <Transactions className="h-full" />
             </ResizablePanel>
           </ResizablePanelGroup>

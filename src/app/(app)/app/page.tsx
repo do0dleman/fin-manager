@@ -1,15 +1,13 @@
 "use client";
 
-import {
-  ResizableHandle,
-  ResizablePanelGroup,
-} from "~/app/_components/ui/resizable";
+import { ResizablePanelGroup } from "~/app/_components/ui/resizable";
 import Toolbar from "../_modules/Toolbar";
 import Board from "../_modules/Board";
 import { useUser } from "@clerk/nextjs";
 import { api } from "~/trpc/react";
 import { redirect } from "next/navigation";
 import AppSkeleton from "../_modules/appSkeleton/AppSkeleton";
+import Handle from "../_modules/Handle";
 
 function App() {
   const userAuthData = useUser();
@@ -34,7 +32,7 @@ function App() {
   return (
     <ResizablePanelGroup direction="horizontal" className="!h-[100dvh]">
       <Toolbar />
-      <ResizableHandle className="" />
+      <Handle />
       <Board />
     </ResizablePanelGroup>
   );
