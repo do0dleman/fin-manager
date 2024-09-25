@@ -34,7 +34,11 @@ export async function POST(req: NextRequest) {
   const isTrial = new Date(payload.data.attributes.trial_ends_at).getTime() - new Date().getTime() > 0
 
   await db.update(users)
-    .set({ status: "active", is_trial: isTrial, })
+    .set({
+      status: "active",
+      is_trial: isTrial,
+      active_until: new Date(payload.data.attributes.renews_at)
+    })
     .where(eq(users.id, userId))
 
 
