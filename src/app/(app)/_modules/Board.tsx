@@ -16,7 +16,7 @@ function Board() {
     <ResizablePanel className="h-[100dvh]">
       <ScrollArea className="h-[100dvh]">
         <div className="grid grid-rows-2 gap-4 py-4 pr-4 text-2xl [&>*]:h-full [@media(min-height:958px)]:h-[100dvh]">
-          <ResizablePanelGroup direction="horizontal" className="">
+          <ResizablePanelGroup direction="horizontal" autoSaveId="app-row-1">
             <ResizablePanel minSize={30} maxSize={70} defaultSize={55}>
               <MoneyAccounts className="h-full" />
             </ResizablePanel>
@@ -25,7 +25,11 @@ function Board() {
               <TransactionsOverTime className="h-full" />
             </ResizablePanel>
           </ResizablePanelGroup>
-          <ResizablePanelGroup direction="horizontal" className="items-stretch">
+          <ResizablePanelGroup
+            direction="horizontal"
+            className="items-stretch"
+            autoSaveId="app-row-2"
+          >
             <ResizablePanel>
               <TransactionsByCategories className="h-full" />
             </ResizablePanel>

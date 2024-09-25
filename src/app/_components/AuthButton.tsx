@@ -31,7 +31,9 @@ function AuthButton(props: { style: "avatar" | "fullButton" }) {
       <Popover>
         <PopoverTrigger className="w-full">
           {style === "avatar" ? (
-            AvatarComponent
+            <div className="flex items-center justify-center">
+              {AvatarComponent}
+            </div>
           ) : (
             <Button
               variant="ghost"
