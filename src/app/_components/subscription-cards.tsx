@@ -8,6 +8,7 @@ import {
 } from "~/app/_components/ui/card";
 import { Button } from "~/app/_components/ui/button";
 import { CheckCircle2 } from "lucide-react";
+import SubscriptionCardsLink from "./subscription-cards-link";
 
 export default function SubscriptionCards() {
   return (
@@ -36,11 +37,13 @@ export default function SubscriptionCards() {
           </ul>
         </CardContent>
         <CardFooter>
-          <Button className="w-full" variant="outline" asChild>
-            <a href="https://finman.lemonsqueezy.com/buy/c648e06f-9f46-4467-9dde-1b08ab82d570">
-              Subscribe Now
-            </a>
-          </Button>
+          <SubscriptionCardsLink
+            className="w-full"
+            variant="outline"
+            href="https://finman.lemonsqueezy.com/buy/c648e06f-9f46-4467-9dde-1b08ab82d570"
+          >
+            Subscribe Now
+          </SubscriptionCardsLink>
         </CardFooter>
       </Card>
 
@@ -71,11 +74,12 @@ export default function SubscriptionCards() {
           </ul>
         </CardContent>
         <CardFooter>
-          <Button className="w-full" asChild>
-            <a href="https://finman.lemonsqueezy.com/buy/4f62d395-1525-4e71-baf7-f8f048bf7f6a">
-              Subscribe Now
-            </a>
-          </Button>
+          <SubscriptionCardsLink
+            className="w-full"
+            href="https://finman.lemonsqueezy.com/buy/4f62d395-1525-4e71-baf7-f8f048bf7f6a"
+          >
+            Subscribe Now
+          </SubscriptionCardsLink>
         </CardFooter>
       </Card>
     </div>
