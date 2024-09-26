@@ -39,7 +39,8 @@ export async function POST(req: NextRequest) {
       status: status,
       is_trial: data.attributes.status == "on_trial",
       active_until: new Date(data.attributes.renews_at),
-      lemonSqueezyCustomerId: data.attributes.customer_id
+      lemonSqueezyCustomerId: data.attributes.customer_id,
+      variantId: data.attributes.variant_id
     })
     .where(eq(users.lemonSqueezyCustomerId, lemonUserId))
 

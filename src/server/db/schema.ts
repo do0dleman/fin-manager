@@ -61,7 +61,8 @@ export const users = createTable(
     username: text("username"),
     profile_img: text("profile_img"),
     role: roleEnum("role").default("user").notNull(),
-    lemonSqueezyCustomerId: integer("lemonSqueezyCustomerId")
+    lemonSqueezyCustomerId: integer("lemonSqueezyCustomerId"),
+    variantId: integer('variantId').references(() => plans.variantId)
   }
 );
 

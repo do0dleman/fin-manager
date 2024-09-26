@@ -25,7 +25,8 @@ export async function POST(req: NextRequest) {
       status: "active",
       is_trial: payload.data.attributes.status === "on_trial",
       active_until: new Date(payload.data.attributes.renews_at),
-      lemonSqueezyCustomerId: payload.data.attributes.customer_id
+      lemonSqueezyCustomerId: payload.data.attributes.customer_id,
+      variantId: payload.data.attributes.variant_id
     })
     .where(eq(users.id, userId))
 
