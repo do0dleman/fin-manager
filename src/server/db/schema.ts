@@ -60,7 +60,8 @@ export const users = createTable(
     is_trial: boolean("is_trial").default(false),
     username: text("username"),
     profile_img: text("profile_img"),
-    role: roleEnum("role").default("user").notNull()
+    role: roleEnum("role").default("user").notNull(),
+    lemonSqueezyCustomerId: integer("lemonSqueezyCustomerId")
   }
 );
 

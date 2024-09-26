@@ -30,7 +30,7 @@ export interface Attributes {
   variant_name: string
   user_name: string
   user_email: string
-  status: string
+  status: "on_trial" | "active" | "paused" | "past_due" | "unpaid" | "cancelled" | "expired"
   status_formatted: string
   card_brand: string
   card_last_four: string

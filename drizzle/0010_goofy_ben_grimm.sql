@@ -1,0 +1,1 @@
+ALTER TABLE "fin-manager_users" ADD COLUMN "lemonSqueezyCustomerId" integer;
