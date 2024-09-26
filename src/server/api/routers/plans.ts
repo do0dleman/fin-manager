@@ -1,6 +1,7 @@
 import { getProduct, listPrices, listProducts, type Variant } from "@lemonsqueezy/lemonsqueezy.js";
 import { TRPCError } from "@trpc/server";
 import { eq } from "drizzle-orm";
+import { z } from "zod";
 import { env } from "~/env";
 
 import { authedProcedure, createTRPCRouter } from "~/server/api/trpc";
@@ -14,6 +15,16 @@ export const plansRouter = createTRPCRouter({
 
       return {
         plans: plans
+      };
+    }),
+  getPlanByVariantId: authedProcedure
+    .input(z.object({ variantId: z.number() }))
+    .query(async ({ ctx, input }) => {
+      const plan = await ctx.db.query.plans
+        .findFirst({ where: eq(plans.variantId, input.variantId) })
+
+      return {
+        plan
       };
     }),
   syncPlans: authedProcedure
