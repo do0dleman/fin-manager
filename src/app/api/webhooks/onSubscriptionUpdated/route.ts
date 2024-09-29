@@ -9,10 +9,10 @@ import { eq } from 'drizzle-orm';
 import checkLemonsqueezySignature from '../_utils/checkLemonSqueezySignature';
 
 export async function POST(req: NextRequest) {
-
-  await checkLemonsqueezySignature(req);
-
   const body = await req.text();
+
+  await checkLemonsqueezySignature(body);
+
   const payload = JSON.parse(body) as OnSubscriptionUpdatedEvent;
   const data = payload.data;
 
@@ -45,5 +45,5 @@ export async function POST(req: NextRequest) {
     .where(eq(users.lemonSqueezyCustomerId, lemonUserId))
 
 
-  return NextResponse.json({ message: `Succesfully registered subscription`, })
+  return NextResponse.json({ message: `Succesfully updated subscription`, })
 }
