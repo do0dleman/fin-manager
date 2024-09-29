@@ -14,6 +14,7 @@ export async function POST(req: NextRequest) {
   await checkLemonsqueezySignature(body);
 
   const payload = JSON.parse(body) as OnSubscriptionEvent;
+  console.log(payload);
 
   const userId = payload.meta.custom_data.user_id;
   if (!userId) {
@@ -26,7 +27,8 @@ export async function POST(req: NextRequest) {
       is_trial: payload.data.attributes.status === "on_trial",
       active_until: new Date(payload.data.attributes.renews_at),
       lemonSqueezyCustomerId: payload.data.attributes.customer_id,
-      variantId: payload.data.attributes.variant_id
+      variantId: payload.data.attributes.variant_id,
+      subscriptionId: payload.data.id
     })
     .where(eq(users.id, userId))
 

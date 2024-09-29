@@ -1,4 +1,4 @@
-import { cancelSubscription, listSubscriptions } from "@lemonsqueezy/lemonsqueezy.js";
+import { cancelSubscription, updateSubscription } from "@lemonsqueezy/lemonsqueezy.js";
 import { TRPCError } from "@trpc/server";
 import { eq } from "drizzle-orm";
 import { z } from "zod";
@@ -25,12 +25,40 @@ export const usersRouter = createTRPCRouter({
       };
     }),
   cancelSubscription: authedProcedure
-    .input(z.object({ user_id: z.string() }))
-    .mutation(async ({input, ctx}) => {
+    .mutation(async ({ ctx }) => {
+      const userData = await ctx.db.query.users.findFirst({
+        where: eq(users.id, ctx.auth.userId),
+      })
+
+      if (!userData?.subscriptionId) {
+        throw new TRPCError({ code: "BAD_REQUEST" })
+      }
+
       configureLemonSqueezy()
-  
-  
-      // cancelSubscription()
-      return
-    })
+
+      const { statusCode } = await cancelSubscription(userData.subscriptionId)
+
+
+      if (statusCode === null || (statusCode >= 200 && statusCode < 300)) {
+        throw new TRPCError({ code: "INTERNAL_SERVER_ERROR" })
+      }
+
+      return { message: "Subscription successfully cancelled" }
+    }),
+  resumeSubscription: authedProcedure
+    .mutation(async ({ ctx }) => {
+      const userData = await ctx.db.query.users.findFirst({
+        where: eq(users.id, ctx.auth.userId),
+      })
+
+      if (!userData?.subscriptionId) {
+        throw new TRPCError({ code: "BAD_REQUEST" })
+      }
+
+      configureLemonSqueezy()
+
+      await updateSubscription(userData.subscriptionId, { cancelled: false })
+
+      return { message: "Subscription successfully renewed" }
+    }),
 });

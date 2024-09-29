@@ -11,6 +11,9 @@ function Subscription() {
     { enabled: user !== undefined },
   );
 
+  const cancelMutation = api.users.cancelSubscription.useMutation();
+  const resumeMutation = api.users.resumeSubscription.useMutation();
+
   const { data: SubscriptionData, isFetched } =
     api.plans.getPlanByVariantId.useQuery(
       { variantId: userData?.user.variantId ?? 0 },
@@ -22,7 +25,20 @@ function Subscription() {
   }
   const subscription = SubscriptionData.plan;
 
-  const date = new Date();
+  const date = new Date(userData?.user.active_until ?? "");
+
+  async function HandleCancelSubscription() {
+    if (!user) {
+      return;
+    }
+    await cancelMutation.mutateAsync();
+  }
+  async function HandleResumeSubscription() {
+    if (!user) {
+      return;
+    }
+    await resumeMutation.mutateAsync();
+  }
 
   return (
     <div className="mt-4 flex flex-col text-right">
@@ -34,7 +50,15 @@ function Subscription() {
       </div>
       <div className="mt-4 flex justify-end gap-4">
         <Button>Change Plan</Button>
-        <Button variant="outline">Cancel</Button>
+        {userData?.user.status === "active" ? (
+          <Button variant="outline" onClick={HandleCancelSubscription}>
+            Cancel
+          </Button>
+        ) : (
+          <Button variant="outline" onClick={HandleResumeSubscription}>
+            Resume
+          </Button>
+        )}
       </div>
     </div>
   );

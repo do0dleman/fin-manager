@@ -22,6 +22,9 @@ function Main() {
   if (userData?.user.status === "inactive") {
     statusColor = "text-destructive";
   }
+  if (userData?.user.status === "canceled") {
+    statusColor = "text-primary";
+  }
   return (
     <div className="flex gap-4">
       <Avatar className="aspect-square h-32 w-32">

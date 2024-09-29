@@ -62,7 +62,8 @@ export const users = createTable(
     profile_img: text("profile_img"),
     role: roleEnum("role").default("user").notNull(),
     lemonSqueezyCustomerId: integer("lemonSqueezyCustomerId"),
-    variantId: integer('variantId').references(() => plans.variantId)
+    variantId: integer('variantId').references(() => plans.variantId),
+    subscriptionId: text('subscriptionId'),
   }
 );
 

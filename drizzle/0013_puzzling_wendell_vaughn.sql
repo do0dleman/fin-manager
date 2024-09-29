@@ -1,0 +1,1 @@
+ALTER TABLE "fin-manager_users" ALTER COLUMN "subscriptionId" SET DATA TYPE text;
