@@ -36,12 +36,10 @@ export const usersRouter = createTRPCRouter({
 
       configureLemonSqueezy()
 
-      const { statusCode } = await cancelSubscription(userData.subscriptionId)
-
-
-      if (statusCode === null || (statusCode >= 200 && statusCode < 300)) {
-        throw new TRPCError({ code: "INTERNAL_SERVER_ERROR" })
-      }
+      await cancelSubscription(userData.subscriptionId)
+      await ctx.db.update(users)
+        .set({ status: "canceled" })
+        .where(eq(users.id, ctx.auth.userId))
 
       return { message: "Subscription successfully cancelled" }
     }),
@@ -57,7 +55,11 @@ export const usersRouter = createTRPCRouter({
 
       configureLemonSqueezy()
 
-      await updateSubscription(userData.subscriptionId, { cancelled: false })
+      // For some reason trial_ends_at has to be implicitly set to null, otherwise it will error
+      await updateSubscription(userData.subscriptionId, { cancelled: false, trialEndsAt: null })
+      await ctx.db.update(users)
+        .set({ status: "active" })
+        .where(eq(users.id, ctx.auth.userId))
 
       return { message: "Subscription successfully renewed" }
     }),
