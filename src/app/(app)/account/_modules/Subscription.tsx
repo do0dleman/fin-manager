@@ -14,6 +14,8 @@ function Subscription() {
   const cancelMutation = api.users.cancelSubscription.useMutation();
   const resumeMutation = api.users.resumeSubscription.useMutation();
 
+  const utils = api.useUtils();
+
   const { data: SubscriptionData, isFetched } =
     api.plans.getPlanByVariantId.useQuery(
       { variantId: userData?.user.variantId ?? 0 },
@@ -32,12 +34,14 @@ function Subscription() {
       return;
     }
     await cancelMutation.mutateAsync();
+    void utils.users.getUserInfo.refetch();
   }
   async function HandleResumeSubscription() {
     if (!user) {
       return;
     }
     await resumeMutation.mutateAsync();
+    void utils.users.getUserInfo.refetch();
   }
 
   return (
