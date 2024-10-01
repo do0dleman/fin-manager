@@ -16,7 +16,7 @@ function Account() {
             <Undo2 /> Back
           </Link>
         </Button>
-        <div className="mt-10 grid grid-cols-2 px-8">
+        <div className="mt-8 grid grid-cols-2 px-8">
           <Main />
           <Subscription />
         </div>

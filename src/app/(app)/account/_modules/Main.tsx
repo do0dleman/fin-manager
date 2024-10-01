@@ -27,7 +27,7 @@ function Main() {
   }
   return (
     <div className="flex gap-4">
-      <Avatar className="aspect-square h-32 w-32">
+      <Avatar className="aspect-square h-28 w-28">
         <AvatarImage src={userData?.user.profile_img ?? ""} />
         <AvatarFallback>
           {userData?.user.username?.slice(0, 2)[0]}
