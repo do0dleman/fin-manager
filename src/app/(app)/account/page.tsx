@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Button } from "~/app/_components/ui/button";
 
 import Main from "./_modules/Main";
-import Subscription from "./_modules/Subscription";
+import Subscription from "./_modules/Subscriptions/Subscription";
 
 function Account() {
   return (
