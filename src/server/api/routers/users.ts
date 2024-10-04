@@ -1,11 +1,11 @@
 import { cancelSubscription, updateSubscription } from "@lemonsqueezy/lemonsqueezy.js";
 import { TRPCError } from "@trpc/server";
-import { eq } from "drizzle-orm";
+import { eq, ne } from "drizzle-orm";
 import { z } from "zod";
 
 import { authedProcedure, createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 import { configureLemonSqueezy } from "~/server/config/lemonsqueezy";
-import { users } from "~/server/db/schema";
+import { plans, users } from "~/server/db/schema";
 
 export const usersRouter = createTRPCRouter({
   getUserInfo: publicProcedure
@@ -23,6 +23,15 @@ export const usersRouter = createTRPCRouter({
       return {
         user: user
       };
+    }),
+  getUserInactiveSubscription: authedProcedure
+    .input(z.object({ current_variant_id: z.number().optional() }))
+    .query(async ({ ctx, input }) => {
+      const planList = await ctx.db.query.plans.findMany({
+        where: ne(plans.variantId, input.current_variant_id ?? -1)
+      })
+
+      return planList
     }),
   cancelSubscription: authedProcedure
     .mutation(async ({ ctx }) => {

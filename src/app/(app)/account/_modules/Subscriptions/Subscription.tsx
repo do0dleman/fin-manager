@@ -1,8 +1,8 @@
 import { useUser } from "@clerk/nextjs";
 import React from "react";
-import { Button } from "~/app/_components/ui/button";
 import { api } from "~/trpc/react";
 import CancelResumeButton from "./components/CancelResumeButton";
+import ChangePlanButton from "./components/ChangePlanButton";
 
 function Subscription() {
   const { user } = useUser();
@@ -35,11 +35,7 @@ function Subscription() {
         </p>
       </div>
       <div className="mt-4 flex justify-end gap-4">
-        <Button
-          variant={userData?.user.status === "active" ? "default" : "outline"}
-        >
-          Change Plan
-        </Button>
+        <ChangePlanButton status={userData?.user.status} />
         <CancelResumeButton status={userData?.user.status} />
       </div>
     </div>

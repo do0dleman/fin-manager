@@ -1,4 +1,4 @@
-import SubscriptionCards from "./_components/subscription-cards";
+import SubscriptionCards from "./_components/subscription-cards/subscription-cards";
 import Header from "./_components/Header";
 
 export default async function Home() {
