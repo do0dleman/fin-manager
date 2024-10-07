@@ -73,7 +73,10 @@ function ChangePlanButton(props: {
 
   return (
     <Dialog>
-      <DialogTrigger>
+      <DialogTrigger
+        className={`${status !== "active" ? "!cursor-default" : ""}`}
+        disabled={status !== "active"}
+      >
         <Button
           variant={status === "active" ? "default" : "outline"}
           disabled={status !== "active"}
