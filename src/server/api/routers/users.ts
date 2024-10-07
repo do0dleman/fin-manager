@@ -14,8 +14,6 @@ export const usersRouter = createTRPCRouter({
       const user = await ctx.db.query.users.findFirst({ where: eq(users.id, input.user_id) })
 
       if (!user) {
-        console.log("failed:")
-        console.log(input.user_id)
         throw new TRPCError({
           code: "BAD_REQUEST",
           message: "User with given id does not exist"
@@ -48,9 +46,14 @@ export const usersRouter = createTRPCRouter({
 
       configureLemonSqueezy()
 
-      await updateSubscription(userData.subscriptionId, { variantId: input.variantId, trialEndsAt: null })
+      const { data } = await updateSubscription(userData.subscriptionId, { variantId: input.variantId, trialEndsAt: null })
+      console.log(data?.data.attributes)
+
       await ctx.db.update(users)
-        .set({ status: "active" })
+        .set({
+          active_until: new Date(0), // invalid date that has to be changed by webhook and refetched on the client
+          variantId: data?.data.attributes.variant_id
+        })
         .where(eq(users.id, ctx.auth.userId))
 
       return { message: "Subscription successfully changed" }

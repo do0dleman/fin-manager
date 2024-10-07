@@ -1,5 +1,5 @@
 import { useUser } from "@clerk/nextjs";
-import React from "react";
+import React, { useEffect } from "react";
 import { api } from "~/trpc/react";
 import CancelResumeButton from "./components/CancelResumeButton";
 import ChangePlanButton from "./components/ChangePlanButton";
@@ -11,6 +11,15 @@ function Subscription() {
     { user_id: user?.id ?? "" },
     { enabled: user !== undefined },
   );
+
+  const utils = api.useUtils();
+  useEffect(() => {
+    if (userData?.user.active_until?.getUTCFullYear() === 1970) {
+      setTimeout(() => {
+        void utils.users.getUserInfo.invalidate();
+      }, 1000);
+    }
+  }, [userData, utils]);
 
   const { data: SubscriptionData, isFetched } =
     api.plans.getPlanByVariantId.useQuery(
@@ -31,7 +40,10 @@ function Subscription() {
       <div>
         <h2 className="text-2xl">{subscription?.productName}</h2>
         <p className="leading-none text-muted-foreground">
-          Next payment: {date.toLocaleDateString()}
+          Next payment:{" "}
+          {date.getFullYear() === 1970
+            ? "loading..."
+            : date.toLocaleDateString()}
         </p>
       </div>
       <div className="mt-4 flex justify-end gap-4">

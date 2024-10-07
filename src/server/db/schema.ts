@@ -56,7 +56,7 @@ export const users = createTable(
       .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),
     status: statusEnum("status").default("inactive").notNull(),
-    active_until: timestamp("active_until", { withTimezone: true }),
+    active_until: timestamp("active_until", { withTimezone: true }),   // date 0 (in 1970) is used as invalid
     is_trial: boolean("is_trial").default(false),
     username: text("username"),
     profile_img: text("profile_img"),

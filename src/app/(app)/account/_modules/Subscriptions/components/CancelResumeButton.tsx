@@ -39,6 +39,7 @@ function CancelButton(props: {
 
     await cancelMutation.mutateAsync();
     await utils.users.getUserInfo.refetch({ user_id: user?.id ?? "" });
+
     setIsLoading(false);
   }
   async function HandleResumeSubscription() {
@@ -52,7 +53,8 @@ function CancelButton(props: {
     setIsLoading(true);
 
     await resumeMutation.mutateAsync();
-    void utils.users.getUserInfo.refetch();
+    await utils.users.getUserInfo.refetch({ user_id: user?.id ?? "" });
+
     setIsLoading(false);
   }
 

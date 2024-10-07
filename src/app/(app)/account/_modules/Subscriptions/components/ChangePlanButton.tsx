@@ -42,7 +42,9 @@ function ChangePlanButton(props: {
     setIsLoading(true);
 
     await changePlanMutation.mutateAsync({ variantId });
+
     await utils.users.getUserInfo.refetch({ user_id: user?.id ?? "" });
+    await utils.plans.getPlanByVariantId.refetch({ variantId });
 
     setIsLoading(false);
   }
