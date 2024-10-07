@@ -14,6 +14,8 @@ export const usersRouter = createTRPCRouter({
       const user = await ctx.db.query.users.findFirst({ where: eq(users.id, input.user_id) })
 
       if (!user) {
+        console.log("failed:")
+        console.log(input.user_id)
         throw new TRPCError({
           code: "BAD_REQUEST",
           message: "User with given id does not exist"
@@ -32,6 +34,26 @@ export const usersRouter = createTRPCRouter({
       })
 
       return planList
+    }),
+  changeSubscriptionPlan: authedProcedure
+    .input(z.object({ variantId: z.number() }))
+    .mutation(async ({ ctx, input }) => {
+      const userData = await ctx.db.query.users.findFirst({
+        where: eq(users.id, ctx.auth.userId),
+      })
+
+      if (!userData?.subscriptionId) {
+        throw new TRPCError({ code: "BAD_REQUEST" })
+      }
+
+      configureLemonSqueezy()
+
+      await updateSubscription(userData.subscriptionId, { variantId: input.variantId, trialEndsAt: null })
+      await ctx.db.update(users)
+        .set({ status: "active" })
+        .where(eq(users.id, ctx.auth.userId))
+
+      return { message: "Subscription successfully changed" }
     }),
   cancelSubscription: authedProcedure
     .mutation(async ({ ctx }) => {

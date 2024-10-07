@@ -1,5 +1,6 @@
 import { useUser } from "@clerk/nextjs";
 import React from "react";
+import useLoaderStore from "~/app/(app)/_modules/store";
 import AnnualCard from "~/app/_components/subscription-cards/annual-card";
 import MonthlyCard from "~/app/_components/subscription-cards/monthly-card";
 import { Button } from "~/app/_components/ui/button";
@@ -31,18 +32,39 @@ function ChangePlanButton(props: {
       { enabled: user !== undefined },
     );
 
-  type CardMapType = Record<number, React.JSX.Element>;
+  const changePlanMutation = api.users.changeSubscriptionPlan.useMutation();
 
-  // TODO: subscription pland change logic
+  const utils = api.useUtils();
+
+  const { setIsLoading } = useLoaderStore();
+
+  async function HandleChangePlan(variantId: number) {
+    setIsLoading(true);
+
+    await changePlanMutation.mutateAsync({ variantId });
+    await utils.users.getUserInfo.refetch({ user_id: user?.id ?? "" });
+
+    setIsLoading(false);
+  }
+
+  type CardMapType = Record<number, React.JSX.Element>;
   const cardMap: CardMapType = {
     483325: (
       <MonthlyCard>
-        <Button className="w-full">Select</Button>
+        <DialogTrigger asChild>
+          <Button className="w-full" onClick={() => HandleChangePlan(483325)}>
+            Select
+          </Button>
+        </DialogTrigger>
       </MonthlyCard>
     ),
     483334: (
       <AnnualCard>
-        <Button className="w-full">Select</Button>
+        <DialogTrigger asChild>
+          <Button className="w-full" onClick={() => HandleChangePlan(483334)}>
+            Select
+          </Button>
+        </DialogTrigger>
       </AnnualCard>
     ),
   };
