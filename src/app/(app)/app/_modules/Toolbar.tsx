@@ -2,8 +2,8 @@
 
 import { House, LayoutDashboard } from "lucide-react";
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
-import { ImperativePanelHandle } from "react-resizable-panels";
+import { useRef, useState } from "react";
+import { type ImperativePanelHandle } from "react-resizable-panels";
 import AuthButton from "~/app/_components/AuthButton";
 import { Button } from "~/app/_components/ui/button";
 import { ResizablePanel } from "~/app/_components/ui/resizable";
@@ -17,8 +17,8 @@ function Toolbar() {
   // useEffect(() => {}, [isCollapsed]);
 
   function HandleResize(width: number) {
-    if (width > 8 && width < 12) {
-      panelRef.current?.resize(12);
+    if (width > 8 && width < 13) {
+      panelRef.current?.resize(13);
       setIsCollapsed(false);
     }
     if (width < 8) {
@@ -29,15 +29,15 @@ function Toolbar() {
 
   return (
     <ResizablePanel
-      defaultSize={isCollapsed ? 4 : 12}
+      defaultSize={isCollapsed ? 4 : 13}
       minSize={4}
-      maxSize={15}
+      maxSize={18}
       onResize={HandleResize}
       ref={panelRef}
-      className="flex flex-col border-r p-2 pb-4 pt-8"
+      className="flex flex-col border-r p-2 pb-4 pt-6"
     >
       <div className={`${isCollapsed ? "text-center" : ""}`}>
-        <WebsiteLogo className="w-[1ch] px-4" showText={!isCollapsed} />
+        <WebsiteLogo className="w-[1ch] px-3" showText={!isCollapsed} />
         <Separator className="my-2" />
         <Button
           variant="ghost"

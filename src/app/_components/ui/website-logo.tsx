@@ -1,4 +1,5 @@
 import React from "react";
+import AppIcon from "../svg/AppIcon";
 
 interface LogoProps extends React.HTMLProps<HTMLSpanElement> {
   showText?: boolean;
@@ -13,10 +14,17 @@ const WebsiteLogo = React.forwardRef<HTMLSpanElement, LogoProps>(
       <span className={`select-none text-4xl ${className}`} ref={ref} {...rest}>
         {showText ? (
           <>
-            <span className="text-primary">Fin</span>Man
+            <div className="inline-flex gap-2">
+              <AppIcon />{" "}
+              <span>
+                <span className="text-primary">Fin</span>Man
+              </span>
+            </div>
           </>
         ) : (
-          <span className="text-primary">F</span>
+          <div className="inline-flex items-center">
+            <AppIcon />
+          </div>
         )}
       </span>
     );

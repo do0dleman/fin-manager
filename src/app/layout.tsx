@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   description: "Finance Manager made using Next.js",
   icons: [
     { rel: "icon", url: "/favicon.svg" },
-    { rel: "icon", url: "/favicon.png" },
+    { rel: "icon", url: "/favicon.ico" },
   ],
 };
 
