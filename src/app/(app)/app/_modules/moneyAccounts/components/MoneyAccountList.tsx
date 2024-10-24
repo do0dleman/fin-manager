@@ -41,6 +41,7 @@ function MoneyAccountList() {
                 <span>{account.name}</span>
                 <div className="flex items-center gap-2">
                   <span>{account.amount}</span>
+                  <span>{account.currency_code}</span>
                   <MoneyAccountDelete accountId={account.id} />
                 </div>
               </div>

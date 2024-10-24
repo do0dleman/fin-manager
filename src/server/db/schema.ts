@@ -67,6 +67,19 @@ export const users = createTable(
   }
 );
 
+export const currency = createTable(
+  "currency",
+  {
+    key: varchar("key", { length: 16 }),
+    symbol: varchar("symbol", { length: 16 }),
+    name: varchar("name", { length: 60 }),
+    symbol_native: varchar("symbol_native", { length: 8 }),
+    decimal_digits: integer("decimal_digit"),
+    rounding: integer("rounding"),
+    name_plural: varchar("name_plural", { length: 64 })
+  }
+);
+
 export const moneyAccounts = createTable(
   "money_accounts",
   {
@@ -74,7 +87,8 @@ export const moneyAccounts = createTable(
     name: varchar("name", { length: 64 }).notNull(),
     amount: numeric("amount", { scale: 2, precision: 15 }).notNull(),
     user_id: text("user_id").references(() => users.id).notNull(),
-    color: accountColorEnum("color").default('blue').notNull()
+    color: accountColorEnum("color").default('blue').notNull(),
+    currency_code: varchar("currency_code", { length: 16 }).default("USD").references(() => currency.key)
   }
 );
 export const transactions = createTable(
