@@ -78,6 +78,10 @@ function TransactionForm(props: { onSuccessSubmit?: () => void }) {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    const account = accountsData?.moneyAccounts.filter(
+      (account) => account.id === values.accountId,
+    )[0];
+
     await createMutation.mutateAsync({
       name: values.name,
       account_id: values.accountId,
@@ -85,6 +89,7 @@ function TransactionForm(props: { onSuccessSubmit?: () => void }) {
       type: values.type,
       category: values.category,
       createdAt: values.createdAt.toISOString().split("T")[0],
+      currency_code: account?.currency_code ?? "UNK",
     });
 
     form.reset();

@@ -1,6 +1,7 @@
 import { api } from "~/trpc/react";
 import { TransactionModal } from "./TransactionModal";
 import { Button } from "~/app/_components/ui/button";
+import TransactionListItem from "./TransactionListItem";
 
 function TransactionList() {
   const { data } = api.transactions.getUserLatestTransactions.useQuery({
@@ -20,20 +21,12 @@ function TransactionList() {
         />
       </div>
       <div>
-        {data?.transactions.map((transaction) => {
-          const isExpense = transaction.type == "expense";
-          return (
-            <div key={`ac-${transaction.id}`} className="flex justify-between">
-              <span>{transaction.name}</span>
-              <span
-                className={`${isExpense ? "text-destructive" : "text-positive"}`}
-              >
-                {isExpense ? "-" : "+"}
-                {transaction.amount}
-              </span>
-            </div>
-          );
-        })}
+        {data?.transactions.map((transaction) => (
+          <TransactionListItem
+            key={`tr-${transaction.id}`}
+            transaction={transaction}
+          />
+        ))}
       </div>
     </div>
   );

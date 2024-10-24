@@ -102,7 +102,8 @@ export const transactions = createTable(
     name: varchar("name", { length: 64 }).notNull(),
     amount: numeric("amount", { scale: 2, precision: 12 }).notNull(),
     category: transactionCategoryEnum("category").default("Other"),
-    type: transactionTypeEnum("type").notNull()
+    type: transactionTypeEnum("type").notNull(),
+    currency_code: varchar("currency_code", { length: 16 }).default("USD").references(() => currency.key)
   }
 );
 
