@@ -2,7 +2,7 @@ import { api } from "~/trpc/react";
 import { MoneyAccountModal } from "./MoneyAccountModal";
 import { Button } from "~/app/_components/ui/button";
 import { useMemo } from "react";
-import MoneyAccountDelete from "./MoneyAccountDelete";
+import MoneyAccountListItem from "./MoneyAccountListItem";
 
 function MoneyAccountList() {
   const { data } = api.moneyAccounts.getUsersMoneyAccounts.useQuery();
@@ -32,20 +32,7 @@ function MoneyAccountList() {
         {data?.moneyAccounts
           .sort((a, b) => +b.amount - +a.amount)
           .map((account) => (
-            <div key={`ac-${account.id}`} className="flex items-center gap-2">
-              <div
-                className={`aspect-square h-5 w-5 rounded-full`}
-                style={{ background: `var(--${account.color})` }}
-              />
-              <div className="flex w-full justify-between">
-                <span>{account.name}</span>
-                <div className="flex items-center gap-2">
-                  <span>{account.amount}</span>
-                  <span>{account.currency_code}</span>
-                  <MoneyAccountDelete accountId={account.id} />
-                </div>
-              </div>
-            </div>
+            <MoneyAccountListItem account={account} key={`ac-${account.id}`} />
           ))}
         <div className="mt-2 flex w-full justify-between border-t">
           <span>Total:</span>

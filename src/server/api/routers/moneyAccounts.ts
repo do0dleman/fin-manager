@@ -3,8 +3,8 @@ import { and, eq } from "drizzle-orm";
 import { z } from "zod";
 import { accountColors } from "~/models/AccountColor";
 
-import { authedProcedure, createTRPCRouter } from "~/server/api/trpc";
-import { moneyAccounts, transactions } from "~/server/db/schema";
+import { authedProcedure, createTRPCRouter, publicProcedure } from "~/server/api/trpc";
+import { currency, moneyAccounts, transactions } from "~/server/db/schema";
 
 export const moneyAccountsRouter = createTRPCRouter({
   getUsersMoneyAccounts: authedProcedure
@@ -54,5 +54,16 @@ export const moneyAccountsRouter = createTRPCRouter({
       }
 
       return { message: `Deleted account id: ${deletedIds[0]?.deltedId}` }
+    }),
+  getCurrencyInfo: publicProcedure
+    .input(z.object({ currency_code: z.string() }))
+    .query(async ({ ctx, input }) => {
+
+      const currencyInfo = await ctx.db.query.currency.findFirst({ where: eq(currency.key, input.currency_code) })
+      if (!currencyInfo) {
+        throw new TRPCError({ code: "BAD_REQUEST" })
+      }
+
+      return currencyInfo
     })
 });

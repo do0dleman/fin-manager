@@ -74,7 +74,6 @@ export const currency = createTable(
     symbol: varchar("symbol", { length: 16 }),
     name: varchar("name", { length: 60 }),
     symbol_native: varchar("symbol_native", { length: 8 }),
-    decimal_digits: integer("decimal_digit"),
     rounding: integer("rounding"),
     name_plural: varchar("name_plural", { length: 64 })
   }

@@ -1,0 +1,1 @@
+ALTER TABLE "fin-manager_currency" DROP COLUMN IF EXISTS "decimal_digit";

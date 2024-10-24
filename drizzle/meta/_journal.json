@@ -148,6 +148,13 @@
       "when": 1729758325503,
       "tag": "0020_stiff_electro",
       "breakpoints": true
+    },
+    {
+      "idx": 21,
+      "version": "6",
+      "when": 1729764934092,
+      "tag": "0021_glossy_deathstrike",
+      "breakpoints": true
     }
   ]
 }
