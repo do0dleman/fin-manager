@@ -46,7 +46,7 @@ export function MoneyAccountChart() {
   return (
     <ChartContainer
       config={chartConfig}
-      className="mx-auto aspect-square h-full min-w-[200px] 2xl:min-w-[300px]"
+      className="3xl:min-w-[300px] mx-auto aspect-square lg:min-w-[100px] xl:min-w-[200px] 2xl:min-w-[250px]"
     >
       <PieChart>
         <ChartTooltip cursor={true} content={<ChartTooltipContent />} />
