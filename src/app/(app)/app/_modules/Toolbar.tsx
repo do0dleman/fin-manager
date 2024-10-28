@@ -41,7 +41,7 @@ function Toolbar() {
         <Separator className="my-2" />
         <Button
           variant="ghost"
-          className="flex w-full justify-start gap-2 text-xl"
+          className={`flex w-full gap-2 text-xl ${isCollapsed ? "justify-center" : "justify-start"}`}
           asChild
         >
           <Link href="/app">
@@ -51,7 +51,7 @@ function Toolbar() {
         </Button>
         <Button
           variant="ghost"
-          className={`flex w-full justify-start text-xl ${isCollapsed ? "" : "gap-2"}`}
+          className={`flex w-full justify-start gap-2 text-xl ${isCollapsed ? "justify-center" : "justify-start"}`}
           asChild
         >
           <Link href="/">
