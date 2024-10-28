@@ -2,7 +2,7 @@
 
 import { House, LayoutDashboard } from "lucide-react";
 import Link from "next/link";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { type ImperativePanelHandle } from "react-resizable-panels";
 import AuthButton from "~/app/_components/AuthButton";
 import { Button } from "~/app/_components/ui/button";
@@ -14,24 +14,41 @@ function Toolbar() {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const panelRef = useRef<ImperativePanelHandle>(null);
 
-  // useEffect(() => {}, [isCollapsed]);
+  const [windowWidth, setWindowWidth] = useState(1920);
+
+  const minSizePx = 60;
+  const midSizePx = 190;
+  const maxSizePx = 256;
+
+  const minSize = (minSizePx / windowWidth) * 100; // make the size absolute (60px)
+  const midSize = (midSizePx / windowWidth) * 100;
+  const maxSize = (maxSizePx / windowWidth) * 100;
+
+  useEffect(() => {
+    const onResize = () => {
+      panelRef.current!.resize(0);
+      setWindowWidth(window.innerWidth);
+    };
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, [windowWidth]);
 
   function HandleResize(width: number) {
-    if (width > 8 && width < 13) {
-      panelRef.current?.resize(13);
+    if (width > minSize * 2 && width < midSize) {
+      panelRef.current?.resize(midSize);
       setIsCollapsed(false);
     }
-    if (width < 8) {
-      panelRef.current?.resize(4);
+    if (width < minSize * 2) {
+      panelRef.current?.resize(minSize);
       setIsCollapsed(true);
     }
   }
 
   return (
     <ResizablePanel
-      defaultSize={isCollapsed ? 4 : 13}
-      minSize={4}
-      maxSize={18}
+      defaultSize={isCollapsed ? minSize : midSize}
+      minSize={minSize}
+      maxSize={maxSize}
       onResize={HandleResize}
       ref={panelRef}
       className="flex flex-col border-r p-2 pb-4 pt-6"
