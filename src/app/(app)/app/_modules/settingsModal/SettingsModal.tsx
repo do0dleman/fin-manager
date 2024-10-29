@@ -32,7 +32,7 @@ function SettingsModal(props: { OpenButton: JSX.Element }) {
   function perifySelectValue(val: string) {
     const icon = document.body.classList.contains("dark") ? <Moon /> : <Sun />;
     return (
-      <span className="flex gap-2 text-lg">
+      <span className="flex items-center gap-2 text-lg">
         {icon}
         {String(val).charAt(0).toUpperCase() + String(val).slice(1)}
       </span>
@@ -64,13 +64,13 @@ function SettingsModal(props: { OpenButton: JSX.Element }) {
                   {perifySelectValue("system")}
                 </SelectItem>
                 <SelectItem value="dark">
-                  <span className="flex gap-2 text-lg">
+                  <span className="flex items-center gap-2 text-lg">
                     <Moon />
                     Dark
                   </span>
                 </SelectItem>
                 <SelectItem value="light">
-                  <span className="flex gap-2 text-lg">
+                  <span className="flex items-center gap-2 text-lg">
                     <Sun /> Light
                   </span>
                 </SelectItem>
