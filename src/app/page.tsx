@@ -4,12 +4,12 @@ import Cta from "./modules/Cta";
 
 export default async function Home() {
   return (
-    <div className="">
+    <body className="dark">
       <Header />
       <Cta />
       <main className="flex items-center justify-center">
         <SubscriptionCards />
       </main>
-    </div>
+    </body>
   );
 }

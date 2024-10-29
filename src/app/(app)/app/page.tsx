@@ -30,10 +30,7 @@ function App() {
   }
 
   return (
-    <ResizablePanelGroup
-      direction="horizontal"
-      className="!h-[100dvh]"
-    >
+    <ResizablePanelGroup direction="horizontal" className="!h-[100dvh]">
       <Toolbar />
       <Handle />
       <Board />
