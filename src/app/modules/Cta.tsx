@@ -1,16 +1,13 @@
 import React from "react";
 import { Button } from "../_components/ui/button";
 import Container from "../_components/container";
-import Graph from "../_components/svg/Graph";
-import Cross from "../_components/svg/Cross";
-import DotCircle from "../_components/svg/DotCircle";
-import Dots from "../_components/svg/Dots";
+import Image from "next/image";
 
 function Cta() {
   return (
-    <section className="mt-20 pb-16">
+    <section className="relative pb-24 pt-28">
       <Container className="relative flex gap-8">
-        <article>
+        <article className="relative z-10 w-[60%]">
           <h1 className="mb-4 text-4xl">
             Take your money into account with FinMan!
           </h1>
@@ -19,12 +16,15 @@ function Cta() {
           </p>
           <Button className="h-10 px-12 py-6 text-lg">Start Trial</Button>
         </article>
-        <Graph className="h-full w-[28rem]" />
-        <Cross className="absolute -top-16 right-[39%] -rotate-12" />
-        <Cross className="absolute bottom-8 right-[5%] rotate-[24deg]" />
-        <DotCircle className="absolute right-[14%] top-2 -rotate-12" />
-        <Dots className="absolute bottom-16 left-[38%] rotate-12" />
+        <Image
+          src="/img/appScreenshot.png"
+          alt={"App Illustration"}
+          className="absolute -bottom-12 -right-16 -z-10"
+          width={672}
+          height={314}
+        />
       </Container>
+      <div className="absolute top-0 h-full w-full bg-gradient-to-br from-background to-muted opacity-20" />
     </section>
   );
 }
