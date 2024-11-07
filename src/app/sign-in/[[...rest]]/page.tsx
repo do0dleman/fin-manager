@@ -3,7 +3,7 @@ import { dark } from "@clerk/themes";
 
 function page() {
   return (
-    <div className="grid h-[100dvh] place-items-center">
+    <body className="dark grid h-[100dvh] place-items-center">
       <SignIn
         appearance={{
           baseTheme: dark,
@@ -15,7 +15,7 @@ function page() {
         }}
         signUpUrl="sign-up"
       />
-    </div>
+    </body>
   );
 }
 export default page;
