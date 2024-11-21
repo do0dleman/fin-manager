@@ -64,6 +64,7 @@ export const users = createTable(
     lemonSqueezyCustomerId: integer("lemonSqueezyCustomerId"),
     variantId: integer('variantId').references(() => plans.variantId),
     subscriptionId: text('subscriptionId'),
+    currency_code: varchar("currency_code", { length: 16 }).default("USD").references(() => currency.key)
   }
 );
 
