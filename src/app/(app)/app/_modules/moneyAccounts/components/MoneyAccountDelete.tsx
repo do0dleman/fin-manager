@@ -29,7 +29,7 @@ function MoneyAccountDelete(props: { accountId: number }) {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button variant="ghost" className="h-fit p-0">
+        <Button variant="icon" className="h-fit p-0 hover:text-destructive">
           <Trash2 />
         </Button>
       </AlertDialogTrigger>
