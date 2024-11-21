@@ -14,7 +14,7 @@ import {
 } from "~/app/_components/ui/select";
 
 import { useState } from "react";
-import { Moon, Settings, Sun } from "lucide-react";
+import { Monitor, Moon, Settings, Sun } from "lucide-react";
 import useSettingsStore, {
   type AppThemeType,
 } from "~/app/(app)/_store/settings_store";
@@ -24,19 +24,15 @@ function SettingsModal(props: { OpenButton: JSX.Element }) {
   const [open, setOpen] = useState(false);
 
   const { theme, setTheme } = useSettingsStore();
+  console.log("theme: ");
+  console.log(theme);
 
   function HandleSettingsSelectChange(e: AppThemeType) {
     setTheme(e);
   }
 
-  function perifySelectValue(val: string) {
-    const icon = document.body.classList.contains("dark") ? <Moon /> : <Sun />;
-    return (
-      <span className="flex items-center gap-2 text-lg">
-        {icon}
-        {String(val).charAt(0).toUpperCase() + String(val).slice(1)}
-      </span>
-    );
+  function pretifySelectValue(val: string) {
+    return String(val).charAt(0).toUpperCase() + String(val).slice(1);
   }
 
   return (
@@ -51,17 +47,23 @@ function SettingsModal(props: { OpenButton: JSX.Element }) {
             App Theme:
             <Select
               onValueChange={HandleSettingsSelectChange}
-              defaultValue="system"
+              defaultValue={theme}
             >
               <SelectTrigger className="w-[180px]">
                 <SelectValue
-                  placeholder={perifySelectValue(theme)}
-                  defaultValue={theme}
+                  placeholder={
+                    <span className="flex items-center gap-2 text-lg">
+                      {pretifySelectValue(theme)}
+                    </span>
+                  }
                 />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="system">
-                  {perifySelectValue("system")}
+                  <span className="flex items-center gap-2 text-lg">
+                    <Monitor />
+                    System
+                  </span>
                 </SelectItem>
                 <SelectItem value="dark">
                   <span className="flex items-center gap-2 text-lg">
